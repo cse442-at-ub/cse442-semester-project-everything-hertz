@@ -1,5 +1,6 @@
 package com.cse_442.ceccarelli.ubeventmanager;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -81,15 +82,20 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_home_page) {
-            // Handle the camera action
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
         } else if (id == R.id.nav_qr_reader) {
-
+            Intent intent = new Intent(this, CheckInActivity.class);
+            startActivity(intent);
         } else if (id == R.id.nav_analytics) {
-
+            Intent intent = new Intent(this, AnalyticsActivity.class);
+            startActivity(intent);
         } else if (id == R.id.nav_events) {
-
+            Intent intent = new Intent(this, UpcomingEventsActivity.class);
+            startActivity(intent);
         } else if (id == R.id.nav_log_out) {
-
+            Intent intent = new Intent(this, LogInActivity.class);
+            startActivity(intent);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

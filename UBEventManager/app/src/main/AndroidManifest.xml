@@ -19,9 +19,24 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
+
+        <activity android:name=".CheckInActivity" />
+        <activity
+            android:name=".AnalyticsActivity"
+            android:label="@string/title_activity_analytics"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".UpcomingEventsActivity"
+            android:label="@string/title_activity_upcoming_events"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".LogInActivity"
+            android:label="@string/title_activity_log_in"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>
