@@ -9,4 +9,7 @@
     <string name="title_activity_analytics">AnalyticsActivity</string>
     <string name="title_activity_upcoming_events">UpcomingEventsActivity</string>
     <string name="title_activity_log_in">LogInActivity</string>
+    <string name="title_password">Password</string>
+    <string name="title_username">Username</string>
+    <string name="title_submit">Submit</string>
 </resources>
