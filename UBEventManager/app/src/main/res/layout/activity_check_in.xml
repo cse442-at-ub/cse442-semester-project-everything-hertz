@@ -64,8 +64,7 @@
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/appBarLayout" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/buttonScan"
@@ -73,12 +72,23 @@
         android:layout_height="60dp"
         android:layout_marginBottom="76dp"
         android:background="@color/darkRoyalBlue"
-        android:onClick="scanCode"
         android:text="Open Camera"
         android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/checkInResult"
+        android:layout_width="169dp"
+        android:layout_height="69dp"
+        android:layout_marginTop="48dp"
+        android:textAlignment="center"
+        android:textColor="@color/darkRoyalBlue"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewName" />
 
 </android.support.constraint.ConstraintLayout>
 
