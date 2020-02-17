@@ -7,24 +7,14 @@
     tools:context=".CheckInActivity">
 
     <android.support.design.widget.AppBarLayout
-        android:id="@+id/appBarLayout"
+        android:id="@+id/CheckIn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.AppBarOverlay"
-        app:layout_constraintTop_toTopOf="parent">
+        android:theme="@style/AppTheme.NoActionBar">
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-
-            <android.support.v7.widget.Toolbar
-                android:id="@+id/toolbar"
-                android:layout_width="50dp"
-                android:layout_height="?attr/actionBarSize"
-                android:background="?attr/colorPrimary"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:popupTheme="@style/AppTheme.PopupOverlay" />
 
             <ImageView
                 android:id="@+id/imageView4"
@@ -63,24 +53,27 @@
     </android.support.design.widget.AppBarLayout>
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/textViewName"
         android:layout_width="377dp"
         android:layout_height="166dp"
         android:layout_marginTop="48dp"
+        android:layout_marginBottom="316dp"
         android:text="To check into an event please allow the app to access your camera and scan the QR code."
         android:textAlignment="center"
         android:textColor="@color/darkRoyalBlue"
         android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/appBarLayout" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/buttonScan"
         android:layout_width="121dp"
         android:layout_height="60dp"
         android:layout_marginBottom="76dp"
         android:background="@color/darkRoyalBlue"
+        android:onClick="scanCode"
         android:text="Open Camera"
         android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -88,3 +81,4 @@
         app:layout_constraintStart_toStartOf="parent" />
 
 </android.support.constraint.ConstraintLayout>
+
