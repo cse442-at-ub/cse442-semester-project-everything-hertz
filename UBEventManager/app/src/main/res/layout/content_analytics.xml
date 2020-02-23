@@ -8,4 +8,11 @@
     tools:context=".AnalyticsActivity"
     tools:showIn="@layout/activity_analytics">
 
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        tools:layout_editor_absoluteX="157dp"
+        tools:layout_editor_absoluteY="275dp" />
 </android.support.constraint.ConstraintLayout>
