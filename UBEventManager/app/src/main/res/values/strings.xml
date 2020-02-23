@@ -12,4 +12,11 @@
     <string name="title_password">Password</string>
     <string name="title_username">Username</string>
     <string name="title_submit">Submit</string>
+    <string-array name="Categories">
+        <item>None</item>
+        <item>Sports</item>
+        <item>Education</item>
+        <item>Music</item>
+        <item>Theater</item>
+    </string-array>
 </resources>
