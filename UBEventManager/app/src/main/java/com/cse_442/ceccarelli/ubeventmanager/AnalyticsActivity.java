@@ -22,6 +22,16 @@ public class AnalyticsActivity extends AppCompatActivity {
             }
         });
 
+
+        Button btnBarChart = findViewById(R.id.frequencyBtn);
+        btnBarChart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent I = new Intent(AnalyticsActivity.this, BarGraphActivity.class);
+                startActivity(I);
+            }
+        });
+
     }
 
 }

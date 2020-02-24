@@ -39,7 +39,7 @@
         android:id="@+id/linearLayout2"
         android:layout_width="409dp"
         android:layout_height="560dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="12dp"
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
