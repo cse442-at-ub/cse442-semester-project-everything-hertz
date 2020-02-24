@@ -3,8 +3,8 @@
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#005abb</color>
-    <color name="royalBlue">#005abb</color>
-    <color name="darkRoyalBlue">#002f56</color>
+    <color name="royalBlue">#005ABB</color>
+    <color name="darkRoyalBlue">#002F56</color>
     <color name="darkGray">#666666</color>
     <color name="lightGray">#f0f0f0</color>
     <color name="white">#ffffff</color>

@@ -12,4 +12,5 @@
     <string name="title_password">Password</string>
     <string name="title_username">Username</string>
     <string name="title_submit">Submit</string>
+    <string name="title_activity_pie_chart_activty">PieChartActivty</string>
 </resources>

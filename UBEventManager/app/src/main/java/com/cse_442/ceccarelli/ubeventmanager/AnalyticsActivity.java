@@ -1,12 +1,9 @@
 package com.cse_442.ceccarelli.ubeventmanager;
-
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.widget.Button;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import android.content.Intent;
 import android.view.View;
-
 public class AnalyticsActivity extends AppCompatActivity {
 
     @Override
@@ -14,7 +11,16 @@ public class AnalyticsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_analytics);
 
+//        BarChart pieChart = findViewById(R.id.piechart);
 
+        Button btnPieChart = findViewById(R.id.eventTypeBtn);
+        btnPieChart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent I = new Intent(AnalyticsActivity.this, PieChartActivity.class);
+                startActivity(I);
+            }
+        });
 
     }
 

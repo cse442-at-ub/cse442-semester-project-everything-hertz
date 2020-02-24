@@ -14,6 +14,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:text="Your current rewards balance is:"
+        android:textColor="@color/darkRoyalBlue"
         android:textSize="26sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -28,6 +29,7 @@
         android:layout_marginTop="8dp"
         android:text="283"
         android:textAlignment="center"
+        android:textColor="@color/royalBlue"
         android:textSize="48sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -49,6 +51,7 @@
             android:layout_height="wrap_content"
             android:text="Upcoming Events"
             android:textAlignment="center"
+            android:textColor="@color/darkRoyalBlue"
             android:textSize="30sp" />
 
         <View
@@ -62,6 +65,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Spring Fest"
+            android:textColor="@color/darkRoyalBlue"
             android:textSize="28sp"
             android:textStyle="bold" />
 
@@ -97,6 +101,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Engineering Week"
+            android:textColor="@color/darkRoyalBlue"
             android:textSize="28sp"
             android:textStyle="bold" />
 
@@ -133,6 +138,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Power Yoga"
+            android:textColor="@color/darkRoyalBlue"
             android:textSize="28sp"
             android:textStyle="bold" />
 
@@ -168,6 +174,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginBottom="32dp"
         android:text="Points"
+        android:textColor="@color/royalBlue"
         android:textSize="18sp"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
         app:layout_constraintStart_toEndOf="@+id/textView4"
