@@ -9,6 +9,7 @@
     tools:showIn="@layout/activity_upcoming_events">
 
     <ScrollView
+        android:fillViewport="true"
         android:id="@+id/s"
         android:layout_width="409dp"
         android:layout_height="673dp"

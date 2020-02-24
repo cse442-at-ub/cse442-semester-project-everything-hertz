@@ -1,5 +1,6 @@
 package com.cse_442.ceccarelli.ubeventmanager;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -11,6 +12,8 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
+
+import org.w3c.dom.Text;
 
 public class UpcomingEventsActivity extends AppCompatActivity {
 
@@ -29,11 +32,138 @@ public class UpcomingEventsActivity extends AppCompatActivity {
 
         LinearLayout scroll = (LinearLayout) findViewById(R.id.linlayout);
 
-        for(int i = 1; i < 51; i++) {
+
             TextView t1 = new TextView(UpcomingEventsActivity.this);
-            t1.setText("event" + i);
+            t1.setText("Spring Fest");
+            t1.setMinHeight(150);
+            t1.setTextSize(30);
             scroll.addView(t1);
-        }
+
+         t1 = new TextView(UpcomingEventsActivity.this);
+        t1.setText("Location: Alumni Arena \nDate: 2-21-20 \nFree concert for students");
+        t1.setMinHeight(250);
+        t1.setTextSize(20);
+        scroll.addView(t1);
+
+            TextView v = new TextView(UpcomingEventsActivity.this);
+        v.setMinimumHeight(1);
+        v.setBackgroundColor(Color.parseColor("#c0c0c0"));
+        scroll.addView(v);
+
+        t1 = new TextView(UpcomingEventsActivity.this);
+        t1.setText("Engineering Week");
+        t1.setMinHeight(150);
+        t1.setTextSize(30);
+        scroll.addView(t1);
+
+        t1 = new TextView(UpcomingEventsActivity.this);
+        t1.setText("Location: Student Union \nDate: 2-21-20 \nMeet and greet for engineering students and companies");
+        t1.setMinHeight(200);
+        t1.setTextSize(20);
+        scroll.addView(t1);
+
+        v = new TextView(UpcomingEventsActivity.this);
+        v.setMinimumHeight(1);
+        v.setBackgroundColor(Color.parseColor("#c0c0c0"));
+        scroll.addView(v);
+
+        t1 = new TextView(UpcomingEventsActivity.this);
+        t1.setText("Power Yoga");
+        t1.setMinHeight(150);
+        t1.setTextSize(30);
+        scroll.addView(t1);
+
+        t1 = new TextView(UpcomingEventsActivity.this);
+        t1.setText("Location: Alumni Arena \nDate: 2-21-20 \nYoga class with a licensed instructor");
+        t1.setMinHeight(200);
+        t1.setTextSize(20);
+        scroll.addView(t1);
+
+        v = new TextView(UpcomingEventsActivity.this);
+        v.setMinimumHeight(1);
+        v.setBackgroundColor(Color.parseColor("#c0c0c0"));
+        scroll.addView(v);
+
+        t1 = new TextView(UpcomingEventsActivity.this);
+        t1.setText("Power Yoga");
+        t1.setMinHeight(150);
+        t1.setTextSize(30);
+        scroll.addView(t1);
+
+        t1 = new TextView(UpcomingEventsActivity.this);
+        t1.setText("Location: Alumni Arena \nDate: 2-21-20 \nYoga class with a licensed instructor");
+        t1.setMinHeight(200);
+        t1.setTextSize(20);
+        scroll.addView(t1);
+
+        v = new TextView(UpcomingEventsActivity.this);
+        v.setMinimumHeight(1);
+        v.setBackgroundColor(Color.parseColor("#c0c0c0"));
+        scroll.addView(v);
+
+        t1 = new TextView(UpcomingEventsActivity.this);
+        t1.setText("Power Yoga");
+        t1.setMinHeight(150);
+        t1.setTextSize(30);
+        scroll.addView(t1);
+
+        t1 = new TextView(UpcomingEventsActivity.this);
+        t1.setText("Location: Alumni Arena \nDate: 2-21-20 \nYoga class with a licensed instructor");
+        t1.setMinHeight(200);
+        t1.setTextSize(20);
+        scroll.addView(t1);
+
+        v = new TextView(UpcomingEventsActivity.this);
+        v.setMinimumHeight(1);
+        v.setBackgroundColor(Color.parseColor("#c0c0c0"));
+        scroll.addView(v);
+
+        t1 = new TextView(UpcomingEventsActivity.this);
+        t1.setText("Power Yoga");
+        t1.setMinHeight(150);
+        t1.setTextSize(30);
+        scroll.addView(t1);
+
+        t1 = new TextView(UpcomingEventsActivity.this);
+        t1.setText("Location: Alumni Arena \nDate: 2-21-20 \nYoga class with a licensed instructor");
+        t1.setMinHeight(200);
+        t1.setTextSize(20);
+        scroll.addView(t1);
+
+        v = new TextView(UpcomingEventsActivity.this);
+        v.setMinimumHeight(1);
+        v.setBackgroundColor(Color.parseColor("#c0c0c0"));
+        scroll.addView(v);
+
+        t1 = new TextView(UpcomingEventsActivity.this);
+        t1.setText("Power Yoga");
+        t1.setMinHeight(150);
+        t1.setTextSize(30);
+        scroll.addView(t1);
+
+        t1 = new TextView(UpcomingEventsActivity.this);
+        t1.setText("Location: Alumni Arena \nDate: 2-21-20 \nYoga class with a licensed instructor");
+        t1.setMinHeight(200);
+        t1.setTextSize(20);
+        scroll.addView(t1);
+
+        v = new TextView(UpcomingEventsActivity.this);
+        v.setMinimumHeight(1);
+        v.setBackgroundColor(Color.parseColor("#c0c0c0"));
+        scroll.addView(v);
+
+        t1 = new TextView(UpcomingEventsActivity.this);
+        t1.setText("Power Yoga");
+        t1.setMinHeight(150);
+        t1.setTextSize(30);
+        scroll.addView(t1);
+
+        t1 = new TextView(UpcomingEventsActivity.this);
+        t1.setText("Location: Alumni Arena \nDate: 2-21-20 \nYoga class with a licensed instructor");
+        t1.setMinHeight(200);
+        t1.setTextSize(20);
+        scroll.addView(t1);
+
 
 
         /*
