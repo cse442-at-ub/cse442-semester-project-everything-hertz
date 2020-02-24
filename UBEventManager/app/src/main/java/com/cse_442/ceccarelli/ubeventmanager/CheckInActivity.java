@@ -2,6 +2,7 @@ package com.cse_442.ceccarelli.ubeventmanager;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.widget.Toast;
 import android.view.View;
 import android.widget.Button;
@@ -20,6 +21,8 @@ public class CheckInActivity extends AppCompatActivity implements View.OnClickLi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_check_in);
+//        Toolbar toolbar = findViewById(R.id.toolbar);
+//        setSupportActionBar(toolbar);
         Button buttonScan;
         buttonScan = findViewById(R.id.buttonScan);
         checkInResult = findViewById(R.id.checkInResult);

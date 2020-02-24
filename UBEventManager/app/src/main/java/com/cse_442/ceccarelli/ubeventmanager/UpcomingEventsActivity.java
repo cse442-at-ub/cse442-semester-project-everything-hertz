@@ -31,8 +31,6 @@ public class UpcomingEventsActivity extends AppCompatActivity {
         categories.setAdapter(myAdapter);
 
         LinearLayout scroll = (LinearLayout) findViewById(R.id.linlayout);
-
-
             TextView t1 = new TextView(UpcomingEventsActivity.this);
             t1.setText("Spring Fest");
             t1.setMinHeight(150);

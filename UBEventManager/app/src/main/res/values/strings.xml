@@ -19,4 +19,5 @@
         <item>Music</item>
         <item>Theater</item>
     </string-array>
+    <string name="title_activity_pie_chart_activty">PieChartActivty</string>
 </resources>
