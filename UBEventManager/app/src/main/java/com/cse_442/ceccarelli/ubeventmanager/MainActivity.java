@@ -115,8 +115,7 @@ public class MainActivity extends AppCompatActivity
         if (i == 1){return "date";}
         if (i == 2){return "loc";}
         if (i == 3){return "desc";}
-//        throw new IndexOutOfBoundsException();
-        return "";
+        throw new IndexOutOfBoundsException();
     }
 
     public String reformatDate(String text) throws Exception{
