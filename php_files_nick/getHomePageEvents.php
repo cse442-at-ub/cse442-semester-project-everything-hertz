@@ -14,7 +14,7 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-$sql = "SELECT name, location, date_and_time, description FROM events HAVING date_and_time > '" . date("Y-m-d h:m:s") . "' ORDER BY date_and_time LIMIT 3";
+$sql = "SELECT name, date_and_time AS date, location AS loc, description AS `desc` FROM events HAVING date_and_time > '" . date("Y-m-d h:m:s") . "' ORDER BY date_and_time LIMIT 3";
 $result = $conn->query($sql);
 
 $data = array();
