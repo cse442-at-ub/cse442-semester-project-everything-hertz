@@ -13,21 +13,17 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
-
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.io.IOException;
-
+import android.util.Log;
 
 
 public class MainActivity extends AppCompatActivity
@@ -82,7 +78,7 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-
+        getTotalPoints();
         // textViews holds TextViews corresponding to each box for three upcoming activities
         HashMap<Integer, HashMap<String, TextView>> textViews = buildTextViews();
 
@@ -102,7 +98,6 @@ public class MainActivity extends AppCompatActivity
                 System.out.println("ERROR FETCHING DATA FROM DATABASE");
                 return;
             }
-
             // Iterate through textviews and update
             updateTextViews(jsonObject, textViews);
         } catch (Exception e){
@@ -181,6 +176,43 @@ public class MainActivity extends AppCompatActivity
                 textViews.get(event+1).get(info).setText(text);
             }
         }
+
+    }
+
+    public void getTotalPoints() {
+        String username = "user1";
+        String type = "get_user_points";
+
+        BackgroundWorker backgroundWorker = (BackgroundWorker) new BackgroundWorker(new BackgroundWorker.AsyncResponse(){
+            @Override
+            public void processFinish(String output) {
+                updateTotalPointsView(output);
+            }
+        }).execute(type,username);
+    }
+
+    public String extractData(String output){
+        System.out.println(output);
+        String retVal= "";
+        try {
+            JSONObject obj = new JSONObject(output);
+            System.out.println("1");
+            System.out.println(obj);
+            JSONObject data = obj.getJSONObject("data");
+            System.out.println("2");
+            System.out.println(data);
+            retVal = data.getString("total_points");
+            System.out.println("3");
+            System.out.println(retVal);
+        }catch(Exception e){
+            Log.e("log_tag", "Error parsing data "+e.toString());
+        }
+
+        return retVal;
+    }
+    public void updateTotalPointsView(String output) {
+        TextView totalPoints = (TextView) findViewById(R.id.totalPoints);
+        totalPoints.setText(extractData(output));
     }
 
     @Override
