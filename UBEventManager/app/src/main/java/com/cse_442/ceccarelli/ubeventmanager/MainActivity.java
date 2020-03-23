@@ -65,43 +65,87 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        if(!LogInActivity.logged_in) {
+            Intent intent = new Intent(this, LogInActivity.class);
+            startActivity(intent);
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.activity_main);
+            Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+            setSupportActionBar(toolbar);
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.addDrawerListener(toggle);
-        toggle.syncState();
+            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+            ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                    this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+            drawer.addDrawerListener(toggle);
+            toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
-        getTotalPoints();
-        // textViews holds TextViews corresponding to each box for three upcoming activities
-        HashMap<Integer, HashMap<String, TextView>> textViews = buildTextViews();
+            NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+            navigationView.setNavigationItemSelectedListener(this);
+            getTotalPoints();
+            // textViews holds TextViews corresponding to each box for three upcoming activities
+            HashMap<Integer, HashMap<String, TextView>> textViews = buildTextViews();
 
-        // Fetch from database
-        new FetchData().execute();
-        // Wait for asynchronous fetch success
-        while (retText.compareTo("processing") == 0);
-        //retText now has he JSON value (hopefully)
+            // Fetch from database
+            new FetchData().execute();
+            // Wait for asynchronous fetch success
+            while (retText.compareTo("processing") == 0) ;
+            //retText now has he JSON value (hopefully)
 
-        JSONObject jsonObject;
-        try {
-            jsonObject = new JSONObject(retText);
+            JSONObject jsonObject;
+            try {
+                jsonObject = new JSONObject(retText);
 
-            // Check if fetch from DB failed - if so, end
-            if ((int) jsonObject.get("success") != 1){
-                // No need to update TextViews because they have the error message by default.
-                System.out.println("ERROR FETCHING DATA FROM DATABASE");
-                return;
+                // Check if fetch from DB failed - if so, end
+                if ((int) jsonObject.get("success") != 1) {
+                    // No need to update TextViews because they have the error message by default.
+                    System.out.println("ERROR FETCHING DATA FROM DATABASE");
+                    return;
+                }
+                // Iterate through textviews and update
+                updateTextViews(jsonObject, textViews);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-            // Iterate through textviews and update
-            updateTextViews(jsonObject, textViews);
-        } catch (Exception e){
-            e.printStackTrace();
+        }
+        else{
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.activity_main);
+            Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+            setSupportActionBar(toolbar);
+
+            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+            ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                    this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+            drawer.addDrawerListener(toggle);
+            toggle.syncState();
+
+            NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+            navigationView.setNavigationItemSelectedListener(this);
+            getTotalPoints();
+            // textViews holds TextViews corresponding to each box for three upcoming activities
+            HashMap<Integer, HashMap<String, TextView>> textViews = buildTextViews();
+
+            // Fetch from database
+            new FetchData().execute();
+            // Wait for asynchronous fetch success
+            while (retText.compareTo("processing") == 0) ;
+            //retText now has he JSON value (hopefully)
+
+            JSONObject jsonObject;
+            try {
+                jsonObject = new JSONObject(retText);
+
+                // Check if fetch from DB failed - if so, end
+                if ((int) jsonObject.get("success") != 1) {
+                    // No need to update TextViews because they have the error message by default.
+                    System.out.println("ERROR FETCHING DATA FROM DATABASE");
+                    return;
+                }
+                // Iterate through textviews and update
+                updateTextViews(jsonObject, textViews);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -180,7 +224,13 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void getTotalPoints() {
-        String username = "user1";
+        String username;
+        if(LogInActivity.logged_in){
+            username = LogInActivity.global_username;
+        }
+        else {
+            username = "user1";
+        }
         String type = "get_user_points";
 
         BackgroundWorker backgroundWorker = (BackgroundWorker) new BackgroundWorker(new BackgroundWorker.AsyncResponse(){
