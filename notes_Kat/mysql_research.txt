@@ -1,0 +1,20 @@
+Specifically commands to generate tables, and inputting data using SQL commands
+
+https://www.vertabelo.com/blog/how-to-store-authentication-data-in-a-database-part-1/
+
+Used this article to research table design when we have passwords in our database. Interesting to see how to make the database secure. However, this would require more APIs to hash the passwords so perhaps it is something we could do for later sprints? For now we could use the methadology of sending a request to the API and having it check if the password is equal to what is stored.
+https://www.donedone.com/building-the-optimal-user-database-model-for-your-application/
+
+Why I think we should split students into log_in and user_info tables. Allows for better design and more flexibility.
+
+https://www.guru99.com/dbms-keys.html
+
+types of keys and when to use what. This helped me with designing the table and assigning which columns have what key if any.
+
+https://dba.stackexchange.com/questions/84705/database-structure-for-users-events-and-event-lists
+
+Gave the idea for why we need to create another table called attendance that will log all individual attendances and would allow to efficiently calculate user points earned from events. and also allow nick to grab the attendance of a given event without touching the user_info table
+
+https://www.guru99.com/how-to-create-a-database.html
+
+to create schemas for the tables and the database itself. Useful to not just code in a table, then you can just rerun the code instead of having to manually redo it

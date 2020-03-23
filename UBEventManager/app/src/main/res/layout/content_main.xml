@@ -23,11 +23,11 @@
         app:layout_constraintVertical_bias="0.0" />
 
     <TextView
-        android:id="@+id/textView4"
+        android:id="@+id/totalPoints"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:text="283"
+        android:text="0"
         android:textAlignment="center"
         android:textColor="@color/royalBlue"
         android:textSize="48sp"
@@ -39,11 +39,10 @@
         android:id="@+id/linearLayout2"
         android:layout_width="409dp"
         android:layout_height="560dp"
-        android:layout_marginTop="12dp"
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView4">
+        app:layout_constraintTop_toBottomOf="@+id/totalPoints">
 
         <TextView
             android:id="@+id/textView12"
@@ -52,7 +51,7 @@
             android:text="Upcoming Events"
             android:textAlignment="center"
             android:textColor="@color/darkRoyalBlue"
-            android:textSize="30sp" />
+            android:textSize="28sp" />
 
         <View
             android:id="@+id/divider"
@@ -60,109 +59,130 @@
             android:layout_height="2dp"
             android:background="@color/darkGray" />
 
-        <TextView
-            android:id="@+id/textView13"
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Spring Fest"
-            android:textColor="@color/darkRoyalBlue"
-            android:textSize="28sp"
-            android:textStyle="bold" />
+            android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/textView23"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Alumni Arena "
-            android:textSize="20sp" />
+            <LinearLayout
+                android:id="@+id/linear"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/textView14"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Friday, February 21, 2020 "
-            android:textSize="20sp" />
+                <TextView
+                    android:id="@+id/event_1_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:tag="event_1_name"
+                    android:text="ERROR FETCHING DATA\nPlease restart the app."
+                    android:textColor="@color/darkRoyalBlue"
+                    android:textSize="22sp"
+                    android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/textView15"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Free Concert for UB students featuring Khalid, Cage the Elephant, and Hozier"
-            android:textSize="20sp" />
+                <TextView
+                    android:id="@+id/event_1_date"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:tag="event_1_date"
+                    android:text="If the issue persists, please contact support."
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
 
-        <View
-            android:id="@+id/divider4"
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:background="@color/darkGray" />
+                <TextView
+                    android:id="@+id/event_1_loc"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:tag="event_1_loc"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/textView17"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Engineering Week"
-            android:textColor="@color/darkRoyalBlue"
-            android:textSize="28sp"
-            android:textStyle="bold" />
+                <TextView
+                    android:id="@+id/event_1_desc"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:tag="event_1_desc"
+                    android:textSize="18sp" />
 
-        <TextView
-            android:id="@+id/textView25"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Student Union"
-            android:textSize="20sp" />
+                <View
+                    android:id="@+id/divider2"
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:background="@color/darkGray" />
 
-        <TextView
-            android:id="@+id/textView18"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Monday-Friday, February 17-21, 2020 "
-            android:textSize="20sp" />
+                <TextView
+                    android:id="@+id/event_2_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:tag="event_2_name"
+                    android:textColor="@color/darkRoyalBlue"
+                    android:textSize="22sp"
+                    android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/textView19"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:linksClickable="false"
-            android:text="Tap for Schedule"
-            android:textSize="20sp" />
+                <TextView
+                    android:id="@+id/event_2_date"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:tag="event_2_date"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
 
-        <View
-            android:id="@+id/divider5"
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:background="@color/darkGray" />
+                <TextView
+                    android:id="@+id/event_2_loc"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:tag="event_2_loc"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/textView20"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Power Yoga"
-            android:textColor="@color/darkRoyalBlue"
-            android:textSize="28sp"
-            android:textStyle="bold" />
+                <TextView
+                    android:id="@+id/event_2_desc"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:tag="event_2_desc"
+                    android:textSize="18sp" />
 
-        <TextView
-            android:id="@+id/textView21"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Tuesday, February 18, 2020 "
-            android:textSize="20sp" />
+                <View
+                    android:id="@+id/divider3"
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:background="@color/darkGray" />
 
-        <TextView
-            android:id="@+id/textView27"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Alumni Arena "
-            android:textSize="20sp" />
+                <TextView
+                    android:id="@+id/event_3_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:tag="event_3_name"
+                    android:textColor="@color/darkRoyalBlue"
+                    android:textSize="22sp"
+                    android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/textView22"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:linksClickable="false"
-            android:text="Participate in Power Yoga with a licensed instructor"
-            android:textSize="20sp" />
+                <TextView
+                    android:id="@+id/event_3_date"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:tag="event_3_date"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/event_3_loc"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:linksClickable="false"
+                    android:tag="event_3_loc"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/event_3_desc"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:linksClickable="false"
+                    android:tag="event_3_desc"
+                    android:textSize="18sp" />
+
+            </LinearLayout>
+        </ScrollView>
 
     </LinearLayout>
 
@@ -177,8 +197,8 @@
         android:textColor="@color/royalBlue"
         android:textSize="18sp"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
-        app:layout_constraintStart_toEndOf="@+id/textView4"
-        app:layout_constraintTop_toBottomOf="@+id/textView4"
+        app:layout_constraintStart_toEndOf="@+id/totalPoints"
+        app:layout_constraintTop_toBottomOf="@+id/totalPoints"
         app:layout_constraintVertical_bias="1.0" />
 
 </android.support.constraint.ConstraintLayout>
