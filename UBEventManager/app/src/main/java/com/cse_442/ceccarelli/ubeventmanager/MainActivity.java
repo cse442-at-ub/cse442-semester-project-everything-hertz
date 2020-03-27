@@ -246,14 +246,7 @@ public class MainActivity extends AppCompatActivity
         String retVal= "";
         try {
             JSONObject obj = new JSONObject(output);
-            System.out.println("1");
-            System.out.println(obj);
-            JSONObject data = obj.getJSONObject("data");
-            System.out.println("2");
-            System.out.println(data);
-            retVal = data.getString("total_points");
-            System.out.println("3");
-            System.out.println(retVal);
+            retVal = obj.getString("data");
         }catch(Exception e){
             Log.e("log_tag", "Error parsing data "+e.toString());
         }

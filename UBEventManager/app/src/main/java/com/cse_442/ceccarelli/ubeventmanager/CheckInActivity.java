@@ -1,5 +1,6 @@
 package com.cse_442.ceccarelli.ubeventmanager;
 
+import android.annotation.SuppressLint;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -15,25 +16,22 @@ import org.json.JSONObject;
 
 public class CheckInActivity extends AppCompatActivity implements View.OnClickListener  {
 
-    private TextView checkInResult;
+    private TextView checkInResult, checkInResultPoints;
     private IntentIntegrator qrScan;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_check_in);
-//        Toolbar toolbar = findViewById(R.id.toolbar);
-//        setSupportActionBar(toolbar);
         Button buttonScan;
         buttonScan = findViewById(R.id.buttonScan);
         checkInResult = findViewById(R.id.checkInResult);
-
+        checkInResultPoints = findViewById(R.id.checkInResult_points);
         //intializing scan object
         qrScan = new IntentIntegrator(this);
-
         //attaching onclick listener
         buttonScan.setOnClickListener(this);
-
     }
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onActivityResult(int requestCode, int resultCode, android.content.Intent data) {
         IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
@@ -45,16 +43,17 @@ public class CheckInActivity extends AppCompatActivity implements View.OnClickLi
             } else {
                 //if qr contains data
                 try {
+                    System.out.println(result.getContents());
                     //converting the data to json
                     JSONObject obj = new JSONObject(result.getContents());
                     //setting values to textviews
-                    checkInResult.setText(obj.getString("name"));
+                    checkInResult.setText(obj.getString("event_id"));
                 } catch (JSONException e) {
                     e.printStackTrace();
                     //if control comes here that means the encoded format not matches
                     //in this case you can display whatever data is available on the qrcode to a toast
 //                    Toast.makeText(this, result.getContents(), Toast.LENGTH_LONG).show();
-                    checkInResult.setText(result.getContents());
+                    checkInResult.setText("Unable to check in to the event");
                 }
             }
         } else {
