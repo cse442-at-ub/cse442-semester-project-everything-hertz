@@ -1,6 +1,7 @@
 package com.cse_442.ceccarelli.ubeventmanager;
 
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -8,6 +9,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
@@ -23,11 +25,17 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
-public class UpcomingEventsActivity extends AppCompatActivity {
+import android.widget.AdapterView.OnItemSelectedListener;
+
+public class UpcomingEventsActivity extends AppCompatActivity implements OnItemSelectedListener{
 
     public String retText = "processing"; // Global text to store return value
     final String url_str = "https://www-student.cse.buffalo.edu/CSE442-542/2020-spring/cse-442k/getUpcomingEvents.php";
+    public LinearLayout scroll;
+    public JSONObject jsonObject;
 
     // Separate class to fetch from database asynchronously
     private class FetchData extends AsyncTask<Void, Void, Void> {
@@ -68,6 +76,7 @@ public class UpcomingEventsActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         Spinner categories = (Spinner) findViewById(R.id.spinner);
+        categories.setOnItemSelectedListener(this);
         ArrayAdapter<String> myAdapter = new ArrayAdapter<String>(UpcomingEventsActivity.this,
                 R.layout.support_simple_spinner_dropdown_item,getResources().getStringArray(R.array.Categories));
         myAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
@@ -79,9 +88,11 @@ public class UpcomingEventsActivity extends AppCompatActivity {
         while (retText.compareTo("processing") == 0) ;
         //retText now has he JSON value (hopefully)
 
-        LinearLayout scroll = (LinearLayout) findViewById(R.id.linlayout);
+        // Create the linear layout
+        scroll = (LinearLayout) findViewById(R.id.linlayout);
 
-        JSONObject jsonObject;
+        // Create the JSON Object (in case try/catch defaults to catch)
+        jsonObject = new JSONObject();
         try {
             jsonObject = new JSONObject(retText);
 
@@ -91,8 +102,6 @@ public class UpcomingEventsActivity extends AppCompatActivity {
                 System.out.println("ERROR FETCHING DATA FROM DATABASE");
                 return;
             }
-            // Iterate through textviews and update
-            updateTextViews(scroll, jsonObject, "None");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -106,34 +115,67 @@ public class UpcomingEventsActivity extends AppCompatActivity {
         return ((String)((JSONObject)((JSONArray) jsonObject.get("data")).get(event)).get(info));
     }
 
-    public void updateTextViews(LinearLayout scroll, JSONObject jsonObject, String category) throws JSONException{
-        if (category == "None"){category = "null";}
-        for (int i = 0; i < ((JSONArray) jsonObject.get("data")).length(); i++){
-            if (category == "null"){
-                for (int j = 0; j < 4; j++){
-                    TextView t1 = new TextView(UpcomingEventsActivity.this);
-                    t1.setText(getTextfromJSON(jsonObject, i, intToVar(j)));
-                    t1.setMinHeight(getMinHeight(j));
-                    t1.setTextSize(getTextSize(j));
-                    scroll.addView(t1);
-                }
+    public void updateTextViews(String category){
+        try {
+            scroll.removeAllViews();
+            for (int i = 0; i < ((JSONArray) jsonObject.get("data")).length(); i++) {
+                if (getTextfromJSON(jsonObject, i, "category").equals(category) || category.equals("None")) {
+//                    TextView spacer = new TextView(UpcomingEventsActivity.this);
+//                    spacer.setText("\n");
+//                    spacer.setHeight(30);
+//                    scroll.addView(spacer);
+//                    TextView spacer2 = new TextView(UpcomingEventsActivity.this);
+//                    spacer2.setText("\n");
+//                    spacer2.setHeight(10);
+//                    spacer2.setBackgroundColor(getResources().getColor(R.color.darkGray));
+//                    scroll.addView(spacer2);
 
-            } else{
-                if (getTextfromJSON(jsonObject, i, "category").equals(category)){
-                    // Implement to make it work with selecting from spinner
+                    for (int j = 0; j < 4; j++) {
+                        TextView t1 = new TextView(UpcomingEventsActivity.this);
+
+//                        setTypeFace(j, t1);
+//                        t1.setTextColor(getResources().getColor(getCurrentColor(j)));
+                        String text = getTextfromJSON(jsonObject, i, intToVar(j));
+//                        if (j == 1){
+//                            try {
+//                                text = reformatDate(text);
+//                            } catch (Exception e){
+//                                System.out.println("date format ERROR");
+//                            }
+//                        }
+                        t1.setText(text);
+                        t1.setMinHeight(getMinHeight(j));
+//                        t1.setTextSize(getTextSize(j));
+                        scroll.addView(t1);
+                    }
+
                 }
 
             }
-
-
+        } catch (JSONException e){
+            e.printStackTrace();
         }
     }
 
+//    public void setTypeFace(int i, TextView t){
+//        if (i < 3){
+//            t.setTypeface(null, Typeface.BOLD);
+//        }
+//    }
+//
+//    public int getCurrentColor(int i){
+//        if (i == 0){return R.color.darkRoyalBlue;}
+//        if (i == 1){return R.color.darkGray;}
+//        if (i == 2){return R.color.darkGray;}
+//        if (i == 3){return R.color.darkGray;}
+//        throw new IndexOutOfBoundsException();
+//    }
+
     public int getTextSize(int i){
-        if (i == 0){return 30;}
-        if (i == 1){return 20;}
-        if (i == 2){return 20;}
-        if (i == 3){return 20;}
+        if (i == 0){return 22;}
+        if (i == 1){return 18;}
+        if (i == 2){return 18;}
+        if (i == 3){return 18;}
         throw new IndexOutOfBoundsException();
     }
 
@@ -151,6 +193,36 @@ public class UpcomingEventsActivity extends AppCompatActivity {
         if (i == 2){return "loc";}
         if (i == 3){return "desc";}
         throw new IndexOutOfBoundsException();
+    }
+
+//    public String reformatDate(String text) throws Exception{
+//        String pattern = "yyyy-MM-dd HH:mm:ss";
+//        SimpleDateFormat format = new SimpleDateFormat(pattern);
+//        Date date = format.parse(text);
+//
+//        // Format for all day event
+//        // If event is scheduled for midnight, it is an all day event
+//        String newPattern;
+//        if (date.getHours() == 0) {
+//            newPattern = "EEE MMM dd, yyyy";
+//        } else {
+//            newPattern = "EEE MMM dd, yyyy hh:mm a";
+//        }
+//
+//        SimpleDateFormat newFormat =new SimpleDateFormat(newPattern);
+//        text = newFormat.format(date);
+//        return text;
+//    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        // On selecting a spinner item
+        String item = parent.getItemAtPosition(position).toString();
+        updateTextViews(item);
+    }
+
+    public void onNothingSelected(AdapterView<?> arg0) {
+        // Do nothing
     }
 
 
