@@ -31,28 +31,23 @@ public class CheckInActivity extends AppCompatActivity implements View.OnClickLi
         //attaching onclick listener
         buttonScan.setOnClickListener(this);
     }
+
     @SuppressLint("SetTextI18n")
     @Override
     protected void onActivityResult(int requestCode, int resultCode, android.content.Intent data) {
         IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
         if (result != null) {
-            //if qrcode has nothing in it
             if (result.getContents() == null) {
-                Toast.makeText(this, "Result Not Found", Toast.LENGTH_LONG).show();
-//                displayResult.setText("Unable to check in");
+                Toast.makeText(this, "Code Not Found", Toast.LENGTH_LONG).show();
             } else {
-                //if qr contains data
                 try {
-                    System.out.println(result.getContents());
-                    //converting the data to json
                     JSONObject obj = new JSONObject(result.getContents());
-                    //setting values to textviews
-                    checkInResult.setText(obj.getString("event_id"));
+                    if(validResult(obj)){
+                        String event_id = obj.getString("event_id");
+                        checkIn(event_id);
+                    }
                 } catch (JSONException e) {
                     e.printStackTrace();
-                    //if control comes here that means the encoded format not matches
-                    //in this case you can display whatever data is available on the qrcode to a toast
-//                    Toast.makeText(this, result.getContents(), Toast.LENGTH_LONG).show();
                     checkInResult.setText("Unable to check in to the event");
                 }
             }
@@ -60,9 +55,47 @@ public class CheckInActivity extends AppCompatActivity implements View.OnClickLi
             super.onActivityResult(requestCode, resultCode, data);
         }
     }
+    @SuppressLint("SetTextI18n")
+    private void checkIn(final String event_id){
+            String username;
+            if(LogInActivity.logged_in){
+                username = LogInActivity.global_username;
+            }
+            else {
+                username = "user1";
+            }
+            String type = "event_check_in";
+            BackgroundWorker backgroundWorker = (BackgroundWorker) new BackgroundWorker(new BackgroundWorker.AsyncResponse(){
+                @Override
+                public void processFinish(String output) {
+                    updateCheckInView(output);
+
+                }
+            }).execute(type,username,event_id);
+        checkInResult.setText("checked into event number:"+ event_id);
+    }
+
+
+    public Boolean updateCheckInView(String output) {
+        try {
+            JSONObject obj = new JSONObject(output);
+            return obj.getInt("success")==1;
+        }catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
     @Override
     public void onClick(View view) {
         qrScan.initiateScan();
     }
 
+    public boolean validResult(JSONObject data) throws JSONException {
+        if (data.has("event_id") && data.length() == 1 && data.get("event_id") instanceof Integer){
+            return true;
+        }else{
+            return false;
+        }
+    }
 }
