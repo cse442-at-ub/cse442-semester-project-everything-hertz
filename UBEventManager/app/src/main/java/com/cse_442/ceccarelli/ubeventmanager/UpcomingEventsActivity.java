@@ -120,32 +120,32 @@ public class UpcomingEventsActivity extends AppCompatActivity implements OnItemS
             scroll.removeAllViews();
             for (int i = 0; i < ((JSONArray) jsonObject.get("data")).length(); i++) {
                 if (getTextfromJSON(jsonObject, i, "category").equals(category) || category.equals("None")) {
-//                    TextView spacer = new TextView(UpcomingEventsActivity.this);
-//                    spacer.setText("\n");
-//                    spacer.setHeight(30);
-//                    scroll.addView(spacer);
-//                    TextView spacer2 = new TextView(UpcomingEventsActivity.this);
-//                    spacer2.setText("\n");
-//                    spacer2.setHeight(10);
-//                    spacer2.setBackgroundColor(getResources().getColor(R.color.darkGray));
-//                    scroll.addView(spacer2);
+                    TextView spacer = new TextView(UpcomingEventsActivity.this);
+                    spacer.setText("\n");
+                    spacer.setHeight(30);
+                    scroll.addView(spacer);
+                    TextView spacer2 = new TextView(UpcomingEventsActivity.this);
+                    spacer2.setText("\n");
+                    spacer2.setHeight(10);
+                    spacer2.setBackgroundColor(getResources().getColor(R.color.darkGray));
+                    scroll.addView(spacer2);
 
                     for (int j = 0; j < 4; j++) {
                         TextView t1 = new TextView(UpcomingEventsActivity.this);
 
-//                        setTypeFace(j, t1);
-//                        t1.setTextColor(getResources().getColor(getCurrentColor(j)));
+                        setTypeFace(j, t1);
+                        t1.setTextColor(getResources().getColor(getCurrentColor(j)));
                         String text = getTextfromJSON(jsonObject, i, intToVar(j));
-//                        if (j == 1){
-//                            try {
-//                                text = reformatDate(text);
-//                            } catch (Exception e){
-//                                System.out.println("date format ERROR");
-//                            }
-//                        }
+                        if (j == 1){
+                            try {
+                                text = reformatDate(text);
+                            } catch (Exception e){
+                                System.out.println("date format ERROR");
+                            }
+                        }
                         t1.setText(text);
                         t1.setMinHeight(getMinHeight(j));
-//                        t1.setTextSize(getTextSize(j));
+                        t1.setTextSize(getTextSize(j));
                         scroll.addView(t1);
                     }
 
@@ -157,19 +157,21 @@ public class UpcomingEventsActivity extends AppCompatActivity implements OnItemS
         }
     }
 
-//    public void setTypeFace(int i, TextView t){
-//        if (i < 3){
-//            t.setTypeface(null, Typeface.BOLD);
-//        }
-//    }
-//
-//    public int getCurrentColor(int i){
-//        if (i == 0){return R.color.darkRoyalBlue;}
-//        if (i == 1){return R.color.darkGray;}
-//        if (i == 2){return R.color.darkGray;}
-//        if (i == 3){return R.color.darkGray;}
-//        throw new IndexOutOfBoundsException();
-//    }
+    public boolean setTypeFace(int i, TextView t){
+        if (i >= 0 && i < 3){
+            t.setTypeface(null, Typeface.BOLD);
+            return true;
+        }
+        return false;
+    }
+
+    public int getCurrentColor(int i){
+        if (i == 0){return R.color.darkRoyalBlue;}
+        if (i == 1){return R.color.darkGray;}
+        if (i == 2){return R.color.darkGray;}
+        if (i == 3){return R.color.darkGray;}
+        throw new IndexOutOfBoundsException();
+    }
 
     public int getTextSize(int i){
         if (i == 0){return 22;}
@@ -195,24 +197,24 @@ public class UpcomingEventsActivity extends AppCompatActivity implements OnItemS
         throw new IndexOutOfBoundsException();
     }
 
-//    public String reformatDate(String text) throws Exception{
-//        String pattern = "yyyy-MM-dd HH:mm:ss";
-//        SimpleDateFormat format = new SimpleDateFormat(pattern);
-//        Date date = format.parse(text);
-//
-//        // Format for all day event
-//        // If event is scheduled for midnight, it is an all day event
-//        String newPattern;
-//        if (date.getHours() == 0) {
-//            newPattern = "EEE MMM dd, yyyy";
-//        } else {
-//            newPattern = "EEE MMM dd, yyyy hh:mm a";
-//        }
-//
-//        SimpleDateFormat newFormat =new SimpleDateFormat(newPattern);
-//        text = newFormat.format(date);
-//        return text;
-//    }
+    public String reformatDate(String text) throws Exception{
+        String pattern = "yyyy-MM-dd HH:mm:ss";
+        SimpleDateFormat format = new SimpleDateFormat(pattern);
+        Date date = format.parse(text);
+
+        // Format for all day event
+        // If event is scheduled for midnight, it is an all day event
+        String newPattern;
+        if (date.getHours() == 0) {
+            newPattern = "EEE MMM dd, yyyy";
+        } else {
+            newPattern = "EEE MMM dd, yyyy hh:mm a";
+        }
+
+        SimpleDateFormat newFormat =new SimpleDateFormat(newPattern);
+        text = newFormat.format(date);
+        return text;
+    }
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {

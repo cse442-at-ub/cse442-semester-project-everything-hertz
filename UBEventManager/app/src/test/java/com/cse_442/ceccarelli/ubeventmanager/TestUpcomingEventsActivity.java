@@ -1,5 +1,7 @@
 package com.cse_442.ceccarelli.ubeventmanager;
 
+import android.widget.TextView;
+
 import org.json.JSONArray;
 //import org.json.JSONException;
 import org.json.JSONObject;
@@ -38,7 +40,7 @@ public class TestUpcomingEventsActivity {
         assertEquals(18, t.getTextSize(2));
         try{
             int error = t.getTextSize(5);
-            assertTrue(false);
+            fail();
         } catch (IndexOutOfBoundsException e){}
     }
 
@@ -48,21 +50,57 @@ public class TestUpcomingEventsActivity {
         assertEquals(18, t.getTextSize(2));
         try{
             int error = t.getTextSize(5);
-            assertTrue(false);
+            fail();
         } catch (IndexOutOfBoundsException e){}
     }
 
     @Test
     public void testIntToVar(){
-        MainActivity ma = new MainActivity();
+        UpcomingEventsActivity ma = new UpcomingEventsActivity();
         String desc = ma.intToVar(2);
         assertEquals(desc, "loc");
 
         try{
             String error = ma.intToVar(5);
-            assertTrue(false);
+            fail();
         } catch (IndexOutOfBoundsException e){}
 
 
+    }
+
+    @Test
+    public void testSetTypeFace(){
+        UpcomingEventsActivity t = new UpcomingEventsActivity();
+        assertTrue(t.setTypeFace(2, new TextView(t)));
+        assertFalse(t.setTypeFace(6, new TextView(t)));
+    }
+
+    @Test
+    public void testGetCurrentColor(){
+        UpcomingEventsActivity t = new UpcomingEventsActivity();
+        assertEquals(R.color.darkRoyalBlue, t.getCurrentColor(0));
+        assertEquals(R.color.darkGray, t.getCurrentColor(2));
+        try{
+            t.getCurrentColor(10);
+            fail();
+        } catch (IndexOutOfBoundsException e){}
+
+    }
+
+    @Test
+    public void testReformatDate() throws Exception {
+        UpcomingEventsActivity ma = new UpcomingEventsActivity();
+
+        // Test PM conversion
+        String unformattedDate = "2020-03-26 17:00:00";
+        String reformattedDate = "Thu Mar 26, 2020 05:00 PM";
+        String reformattedDateTest = ma.reformatDate(unformattedDate);
+        assertEquals(reformattedDateTest, reformattedDate);
+
+        // Test AM case
+        unformattedDate = "2021-09-12 06:00:00";
+        reformattedDate = "Sun Sep 12, 2021 06:00 AM";
+        reformattedDateTest = ma.reformatDate(unformattedDate);
+        assertEquals(reformattedDateTest, reformattedDate);
     }
 }
