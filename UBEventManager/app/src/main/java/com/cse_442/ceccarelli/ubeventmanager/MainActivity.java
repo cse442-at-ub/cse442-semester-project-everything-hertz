@@ -147,15 +147,12 @@ public class MainActivity extends AppCompatActivity
             Log.d("MainActivity","passed fetchData");
             // Wait for asynchronous fetch success
             while (retText.compareTo("processing") == 0){
-                /*
                 try {
                     Thread.sleep(50);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
                 //Log.d("MainActivity",retText);
-                
-                 */
             }
             //retText now has he JSON value (hopefully)
             Log.d("MainActivity","passed retText while loop");
