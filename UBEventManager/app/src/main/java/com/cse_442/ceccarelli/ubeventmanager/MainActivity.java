@@ -1,8 +1,10 @@
 package com.cse_442.ceccarelli.ubeventmanager;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -29,9 +31,13 @@ import android.util.Log;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    public String retText = "processing"; // Global text to store return value
+    public final String LOGGED_IN = "logged_in";
+    public final String USERNAME = "username";
+    public String retText;// = "processing"; // Global text to store return value
     final String url_str = "https://www-student.cse.buffalo.edu/CSE442-542/2020-spring/cse-442k/getHomePageEvents.php";
-
+    public void setRetText(String s){
+        retText = s;
+    }
     // Separate class to fetch from database asynchronously
     private class FetchData extends AsyncTask<Void, Void, Void>{
 
@@ -53,21 +59,26 @@ public class MainActivity extends AppCompatActivity
                 e.printStackTrace();
                 result = e.toString();
             }
-            retText = result;
+            Log.d("MainActivity", "Finished background work");
+            setRetText(result);
             return null;
         }
         @Override
         protected void onPostExecute(Void aVoid) {
-            retText = result;
+            setRetText(result);
             super.onPostExecute(aVoid);
         }
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
-        if(!LogInActivity.logged_in) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
+        SharedPreferences.Editor editor = preferences.edit();
+        if(!preferences.getBoolean(LOGGED_IN,false)) {
             Intent intent = new Intent(this, LogInActivity.class);
             startActivity(intent);
+            this.finish();
+            /*
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_main);
             Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -106,8 +117,11 @@ public class MainActivity extends AppCompatActivity
             } catch (Exception e) {
                 e.printStackTrace();
             }
+
+             */
         }
         else{
+            Log.d("MainActivity", "Reached Else in main");
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_main);
             Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -118,19 +132,33 @@ public class MainActivity extends AppCompatActivity
                     this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
             drawer.addDrawerListener(toggle);
             toggle.syncState();
+            retText = "processing";
 
             NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
             navigationView.setNavigationItemSelectedListener(this);
+            Log.d("MainActivity","reached getTotalPoints");
             getTotalPoints();
+            Log.d("MainActivity","passed total points");
             // textViews holds TextViews corresponding to each box for three upcoming activities
             HashMap<Integer, HashMap<String, TextView>> textViews = buildTextViews();
-
+            Log.d("MainActivity", "Reached fetchData");
             // Fetch from database
             new FetchData().execute();
+            Log.d("MainActivity","passed fetchData");
             // Wait for asynchronous fetch success
-            while (retText.compareTo("processing") == 0) ;
+            while (retText.compareTo("processing") == 0){
+                /*
+                try {
+                    Thread.sleep(50);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                //Log.d("MainActivity",retText);
+                
+                 */
+            }
             //retText now has he JSON value (hopefully)
-
+            Log.d("MainActivity","passed retText while loop");
             JSONObject jsonObject;
             try {
                 jsonObject = new JSONObject(retText);
@@ -141,11 +169,14 @@ public class MainActivity extends AppCompatActivity
                     System.out.println("ERROR FETCHING DATA FROM DATABASE");
                     return;
                 }
+                Log.d("MainActivity", "Reached updateTextViews");
                 // Iterate through textviews and update
                 updateTextViews(jsonObject, textViews);
+                Log.d("MainActivity", "Passed updateTextViews");
             } catch (Exception e) {
                 e.printStackTrace();
             }
+            Log.d("MainActivity","Reached end of onCreate in main");
         }
     }
 
@@ -224,9 +255,11 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void getTotalPoints() {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
+        SharedPreferences.Editor editor = preferences.edit();
         String username;
-        if(LogInActivity.logged_in){
-            username = LogInActivity.global_username;
+        if(preferences.getBoolean(LOGGED_IN,false)){
+            username = preferences.getString(USERNAME,"user1");
         }
         else {
             username = "user1";
@@ -262,6 +295,9 @@ public class MainActivity extends AppCompatActivity
     }
     public void updateTotalPointsView(String output) {
         TextView totalPoints = (TextView) findViewById(R.id.totalPoints);
+
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
+
         totalPoints.setText(extractData(output));
     }
 
@@ -305,7 +341,8 @@ public class MainActivity extends AppCompatActivity
 
         if (id == R.id.nav_home_page) {
             Intent intent = new Intent(this, MainActivity.class);
-            startActivity(intent);
+            startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT));
+            //this.finish();
         } else if (id == R.id.nav_qr_reader) {
             Intent intent = new Intent(this, CheckInActivity.class);
             startActivity(intent);
@@ -317,7 +354,9 @@ public class MainActivity extends AppCompatActivity
             startActivity(intent);
         } else if (id == R.id.nav_log_out) {
             Intent intent = new Intent(this, LogInActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
+            this.finish();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

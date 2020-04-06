@@ -47,7 +47,9 @@
         <activity
             android:name=".LogInActivity"
             android:label="@string/title_activity_log_in"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"
+            android:noHistory="true"
+            android:excludeFromRecents="true"/>
     </application>
 
 </manifest>
