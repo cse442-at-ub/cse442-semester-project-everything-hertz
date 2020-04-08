@@ -4,6 +4,7 @@ import android.widget.TextView;
 
 import org.json.JSONArray;
 //import org.json.JSONException;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import static org.junit.Assert.*;
@@ -35,7 +36,7 @@ public class TestUpcomingEventsActivity {
     }
 
     @Test
-    public void testGetTextSize(){
+    public void testSetTextSize(){
         UpcomingEventsActivity t = new UpcomingEventsActivity();
         assertEquals(18, t.getTextSize(2));
         try{
@@ -102,5 +103,30 @@ public class TestUpcomingEventsActivity {
         reformattedDate = "Sun Sep 12, 2021 06:00 AM";
         reformattedDateTest = ma.reformatDate(unformattedDate);
         assertEquals(reformattedDateTest, reformattedDate);
+    }
+    @Test
+    public void testSearchEvents(){
+        UpcomingEventsActivity uea = new UpcomingEventsActivity();
+
+        try{
+            JSONObject jsonObject = new JSONObject();
+            JSONArray sub1 = new JSONArray();
+            JSONObject sub2 = new JSONObject();
+
+            sub2.put("name", "Spring Fest");
+            sub2.put("loc", "Alumni Arena");
+            sub2.put("desc", "Concert series for undergraduates.");
+            sub1.put(0, sub2);
+            jsonObject.put("data", sub1);
+
+            assertTrue(uea.searchEvents(jsonObject, 0, "spring"));
+            assertFalse(uea.searchEvents(jsonObject, 0, "Spring Feast"));
+            assertTrue(uea.searchEvents(jsonObject, 0, " arena"));
+            assertFalse(uea.searchEvents(jsonObject, 0, "the arena"));
+            assertTrue(uea.searchEvents(jsonObject, 0, "Undergraduates"));
+            assertFalse(uea.searchEvents(jsonObject, 0, "undergrads"));
+        } catch (JSONException e){
+            fail();
+        }
     }
 }

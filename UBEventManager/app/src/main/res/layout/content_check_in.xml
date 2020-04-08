@@ -12,7 +12,7 @@
         android:id="@+id/textViewName"
         android:layout_width="377dp"
         android:layout_height="166dp"
-        android:layout_marginTop="48dp"
+        android:layout_marginTop="24dp"
         android:layout_marginBottom="316dp"
         android:text="To check into an event please allow the app to access your camera and scan the QR code."
         android:textAlignment="center"
@@ -20,7 +20,8 @@
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/buttonScan"

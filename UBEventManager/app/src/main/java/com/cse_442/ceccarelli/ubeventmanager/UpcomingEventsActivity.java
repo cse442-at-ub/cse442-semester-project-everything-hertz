@@ -1,25 +1,23 @@
 package com.cse_442.ceccarelli.ubeventmanager;
 
-import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -30,12 +28,10 @@ import java.util.Date;
 
 import android.widget.AdapterView.OnItemSelectedListener;
 
-public class UpcomingEventsActivity extends AppCompatActivity implements OnItemSelectedListener{
+public class UpcomingEventsActivity extends AppCompatActivity{
 
-    public String retText = "processing"; // Global text to store return value
-    final String url_str = "https://www-student.cse.buffalo.edu/CSE442-542/2020-spring/cse-442k/getUpcomingEvents.php";
-    public LinearLayout scroll;
-    public JSONObject jsonObject;
+    private String retText = "processing"; // Global text to store return value
+    private LinearLayout scroll;
 
     // Separate class to fetch from database asynchronously
     private class FetchData extends AsyncTask<Void, Void, Void> {
@@ -43,6 +39,7 @@ public class UpcomingEventsActivity extends AppCompatActivity implements OnItemS
         String result;
         @Override
         protected Void doInBackground(Void... voids) {
+            String url_str = "https://www-student.cse.buffalo.edu/CSE442-542/2020-spring/cse-442k/getUpcomingEvents.php";
             URL url;
             try {
                 url = new URL(url_str);
@@ -58,12 +55,12 @@ public class UpcomingEventsActivity extends AppCompatActivity implements OnItemS
                 e.printStackTrace();
                 result = e.toString();
             }
-            retText = result;
+            setRetText(result);
             return null;
         }
         @Override
         protected void onPostExecute(Void aVoid) {
-            retText = result;
+            setRetText(result);
             super.onPostExecute(aVoid);
         }
     }
@@ -75,29 +72,22 @@ public class UpcomingEventsActivity extends AppCompatActivity implements OnItemS
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        Spinner categories = (Spinner) findViewById(R.id.spinner);
-        categories.setOnItemSelectedListener(this);
-        ArrayAdapter<String> myAdapter = new ArrayAdapter<String>(UpcomingEventsActivity.this,
-                R.layout.support_simple_spinner_dropdown_item,getResources().getStringArray(R.array.Categories));
-        myAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
-        categories.setAdapter(myAdapter);
-
         // Fetch from database
         new FetchData().execute();
         // Wait for asynchronous fetch success
-        while (retText.compareTo("processing") == 0) ;
+        while (getRetText().compareTo("processing") == 0) ;
         //retText now has he JSON value (hopefully)
 
         // Create the linear layout
-        scroll = (LinearLayout) findViewById(R.id.linlayout);
+        setScroll((LinearLayout) findViewById(R.id.linlayout));
 
         // Create the JSON Object (in case try/catch defaults to catch)
-        jsonObject = new JSONObject();
+        JSONObject jsonObjectConstruct = new JSONObject();
         try {
-            jsonObject = new JSONObject(retText);
+            jsonObjectConstruct = new JSONObject(getRetText());
 
             // Check if fetch from DB failed - if so, end
-            if ((int) jsonObject.get("success") != 1) {
+            if ((int) jsonObjectConstruct.get("success") != 1) {
                 // No need to update TextViews because they have the error message by default.
                 System.out.println("ERROR FETCHING DATA FROM DATABASE");
                 return;
@@ -105,6 +95,53 @@ public class UpcomingEventsActivity extends AppCompatActivity implements OnItemS
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        // Make the JSONObject final
+        final JSONObject jsonObject = jsonObjectConstruct;
+
+        // Get search bar
+        final EditText searchBar = (EditText) findViewById(R.id.searchBar);
+
+        // Get spinner
+        final Spinner categories = (Spinner) findViewById(R.id.spinner);
+
+        // Set up listener for search bar
+        searchBar.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(final CharSequence s, final int start, final int count, final int after) {}
+
+            // Render TextViews with search applied
+            @Override
+            public void onTextChanged(final CharSequence s, final int start, final int before, final int count) {
+                String search = s.toString();
+                String spinnerText = categories.getSelectedItem().toString();
+                updateTextViews(jsonObject, spinnerText, search);
+            }
+
+            @Override
+            public void afterTextChanged(final Editable s) {}
+        });
+
+        // Populate spinner with categories
+        ArrayAdapter<String> myAdapter = new ArrayAdapter<String>(UpcomingEventsActivity.this,
+                R.layout.support_simple_spinner_dropdown_item,getResources().getStringArray(R.array.Categories));
+        myAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
+        categories.setAdapter(myAdapter);
+
+        // Set up listener for spinner
+        categories.setOnItemSelectedListener(new OnItemSelectedListener() {
+
+            // Render TextViews with category selected
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String item = parent.getItemAtPosition(position).toString();
+                String searcher = searchBar.getText().toString();
+                updateTextViews(jsonObject, item, searcher);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {}
+        });
 
     }
     public String getTextfromJSON(JSONObject jsonObject, int event, String info) throws JSONException {
@@ -115,20 +152,34 @@ public class UpcomingEventsActivity extends AppCompatActivity implements OnItemS
         return ((String)((JSONObject)((JSONArray) jsonObject.get("data")).get(event)).get(info));
     }
 
-    public void updateTextViews(String category){
+    public boolean searchEvents(JSONObject jsonObject, int i, String search){
+        try{
+            if (getTextfromJSON(jsonObject, i, "name").toLowerCase().contains(search.toLowerCase()) ||
+                    getTextfromJSON(jsonObject, i, "desc").toLowerCase().contains(search.toLowerCase()) ||
+                    getTextfromJSON(jsonObject, i, "loc").toLowerCase().contains(search.toLowerCase())) {
+                return true;
+            }
+            return false;
+        } catch (JSONException e){
+            return false;
+        }
+
+    }
+
+    public void updateTextViews(JSONObject jsonObject, String category, String search){
         try {
-            scroll.removeAllViews();
+            getScroll().removeAllViews();
             for (int i = 0; i < ((JSONArray) jsonObject.get("data")).length(); i++) {
-                if (getTextfromJSON(jsonObject, i, "category").equals(category) || category.equals("None")) {
+                if ((getTextfromJSON(jsonObject, i, "category").equals(category) || category.equals("None")) && searchEvents(jsonObject, i, search)) {
                     TextView spacer = new TextView(UpcomingEventsActivity.this);
                     spacer.setText("\n");
                     spacer.setHeight(30);
-                    scroll.addView(spacer);
+                    getScroll().addView(spacer);
                     TextView spacer2 = new TextView(UpcomingEventsActivity.this);
                     spacer2.setText("\n");
                     spacer2.setHeight(10);
                     spacer2.setBackgroundColor(getResources().getColor(R.color.darkGray));
-                    scroll.addView(spacer2);
+                    getScroll().addView(spacer2);
 
                     for (int j = 0; j < 4; j++) {
                         TextView t1 = new TextView(UpcomingEventsActivity.this);
@@ -146,12 +197,16 @@ public class UpcomingEventsActivity extends AppCompatActivity implements OnItemS
                         t1.setText(text);
                         t1.setMinHeight(getMinHeight(j));
                         t1.setTextSize(getTextSize(j));
-                        scroll.addView(t1);
+                        getScroll().addView(t1);
                     }
 
                 }
 
             }
+            TextView spacer = new TextView(UpcomingEventsActivity.this);
+            spacer.setText("\n");
+            spacer.setHeight(150);
+            getScroll().addView(spacer);
         } catch (JSONException e){
             e.printStackTrace();
         }
@@ -185,7 +240,7 @@ public class UpcomingEventsActivity extends AppCompatActivity implements OnItemS
         if (i == 0){return 50;}
         if (i == 1){return 20;}
         if (i == 2){return 20;}
-        if (i == 3){return 200;}
+        if (i == 3){return 0;}
         throw new IndexOutOfBoundsException();
     }
 
@@ -216,16 +271,20 @@ public class UpcomingEventsActivity extends AppCompatActivity implements OnItemS
         return text;
     }
 
-    @Override
-    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        // On selecting a spinner item
-        String item = parent.getItemAtPosition(position).toString();
-        updateTextViews(item);
+    public LinearLayout getScroll(){
+        return scroll;
     }
 
-    public void onNothingSelected(AdapterView<?> arg0) {
-        // Do nothing
+    public void setScroll(LinearLayout l){
+        scroll = l;
     }
 
+    public String getRetText(){
+        return retText;
+    }
+
+    public void setRetText(String r){
+        retText = r;
+    }
 
 }
