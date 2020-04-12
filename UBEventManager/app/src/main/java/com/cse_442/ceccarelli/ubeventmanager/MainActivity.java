@@ -13,11 +13,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -33,6 +36,8 @@ public class MainActivity extends AppCompatActivity
 
     public final String LOGGED_IN = "logged_in";
     public final String USERNAME = "username";
+    public final String HAVENAME = "havename";
+    public final String REALNAME = "realname";
     public String retText;// = "processing"; // Global text to store return value
     final String url_str = "https://www-student.cse.buffalo.edu/CSE442-542/2020-spring/cse-442k/getHomePageEvents.php";
     public void setRetText(String s){
@@ -134,8 +139,42 @@ public class MainActivity extends AppCompatActivity
             toggle.syncState();
             retText = "processing";
 
-            NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+            final NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
             navigationView.setNavigationItemSelectedListener(this);
+            String username = PreferenceManager.getDefaultSharedPreferences(MainActivity.this).getString(USERNAME, "user1");
+
+            if(!PreferenceManager.getDefaultSharedPreferences(MainActivity.this).getBoolean(HAVENAME, false)){
+                BackgroundWorker backgroundWorker = (BackgroundWorker) new BackgroundWorker(new BackgroundWorker.AsyncResponse() {
+                    @Override
+                    public void processFinish(String output) {
+                        JSONObject jsonObject;
+                        try{
+                            jsonObject = new JSONObject(output);
+
+                            if ((int) jsonObject.get("success") != 1) {
+                                // No need to update TextViews because they have the error message by default.
+                                System.out.println("ERROR FETCHING DATA FROM DATABASE");
+                                return;
+                            }
+                            else{
+                                String firstName = ((String)((JSONObject)((JSONArray) jsonObject.get("data")).get(0)).get("first_name"));
+                                String lastName = ((String)((JSONObject)((JSONArray) jsonObject.get("data")).get(0)).get("last_name"));
+                                String name = firstName + " " + lastName;
+                                TextView textView = navigationView.getHeaderView(0).findViewById(R.id.navTextView);
+                                SharedPreferences preferences1 = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
+                                SharedPreferences.Editor editor1 = preferences1.edit();
+                                editor1.putString(REALNAME, name);
+                                editor1.putBoolean(HAVENAME, true);
+                                textView.setText(name);
+                            }
+                        }
+                        catch(Exception e){
+                            e.printStackTrace();
+                        }
+                    }
+                }).execute("get_real_name", username);
+            }
+
             Log.d("MainActivity","reached getTotalPoints");
             getTotalPoints();
             Log.d("MainActivity","passed total points");
@@ -173,6 +212,7 @@ public class MainActivity extends AppCompatActivity
             } catch (Exception e) {
                 e.printStackTrace();
             }
+            //setNavInfo();
             Log.d("MainActivity","Reached end of onCreate in main");
         }
     }
@@ -296,6 +336,12 @@ public class MainActivity extends AppCompatActivity
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
 
         totalPoints.setText(extractData(output));
+    }
+
+    public void setNavInfo(){
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
+        TextView t = findViewById(R.id.navTextView);
+        t.setText(preferences.getString(USERNAME, "Mathew (Everything) Hertz"));
     }
 
     @Override
