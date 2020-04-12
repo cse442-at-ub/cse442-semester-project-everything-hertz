@@ -23,6 +23,7 @@ import java.net.URL;
 public class LogInActivity extends AppCompatActivity {
     public final String LOGGED_IN = "logged_in";
     public final String USERNAME = "username";
+    public final String HAVENAME = "havename";
     String username,password,result;
 
     EditText usernameInput;
@@ -42,6 +43,7 @@ public class LogInActivity extends AppCompatActivity {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(LogInActivity.this);
         SharedPreferences.Editor editor = preferences.edit();
         editor.putBoolean(LOGGED_IN,false);
+        editor.putBoolean(HAVENAME, false);
         editor.commit();
         /*
         logged_in = false;
@@ -96,7 +98,7 @@ public class LogInActivity extends AppCompatActivity {
                 }
                 else{
                     TextView t1 = (TextView) findViewById(R.id.log_in_text);
-                    t1.setText("Try Again");
+                    t1.setText("Try again");
                 }
             }
         }).execute(type,username,password);

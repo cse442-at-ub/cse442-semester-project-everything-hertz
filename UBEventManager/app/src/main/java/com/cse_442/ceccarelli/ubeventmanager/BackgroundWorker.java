@@ -34,7 +34,8 @@ public class BackgroundWorker extends AsyncTask<String,Void,String> {
         String log_in_url = "https://www-student.cse.buffalo.edu/CSE442-542/2020-spring/cse-442k/getLogIn.php";
         String check_in_url = "https://www-student.cse.buffalo.edu/CSE442-542/2020-spring/cse-442k/log_attendence.php";
         String get_event_name_url = "https://www-student.cse.buffalo.edu/CSE442-542/2020-spring/cse-442k/getEventName.php";
-        if (type.equals("get_user_points")) {
+        final String real_name_url = "https://www-student.cse.buffalo.edu/CSE442-542/2020-spring/cse-442k/getRealName.php";
+        if(type.equals("get_user_points")) {
             try {
                 String user_name = params[1];
                 URL url = new URL(get_points_url);
@@ -137,6 +138,36 @@ public class BackgroundWorker extends AsyncTask<String,Void,String> {
                 BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
                 String post_data = URLEncoder.encode("username","UTF-8") + "=" + URLEncoder.encode(user_name,"UTF-8") + "&" +
                         URLEncoder.encode("password","UTF-8") + "=" + URLEncoder.encode(password,"UTF-8");
+                bufferedWriter.write(post_data);
+                bufferedWriter.flush();
+                bufferedWriter.close();
+                outputStream.close();
+                InputStream inputStream = httpURLConnection.getInputStream();
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream,"iso-8859-1"));
+                String result="";
+                String line= "";
+                while((line = bufferedReader.readLine())!= null) {
+                    result += line;
+                }
+                bufferedReader.close();
+                inputStream.close();
+                httpURLConnection.disconnect();
+                return result;
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        else if(type.equals("get_real_name")){
+            try {
+                String user_name = params[1];
+                URL url = new URL(real_name_url);
+                HttpURLConnection httpURLConnection = (HttpURLConnection)url.openConnection();
+                httpURLConnection.setRequestMethod("POST");
+                httpURLConnection.setDoOutput(true);
+                httpURLConnection.setDoInput(true);
+                OutputStream outputStream = httpURLConnection.getOutputStream();
+                BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
+                String post_data = URLEncoder.encode("username","UTF-8") + "=" + URLEncoder.encode(user_name,"UTF-8");
                 bufferedWriter.write(post_data);
                 bufferedWriter.flush();
                 bufferedWriter.close();
