@@ -55,28 +55,67 @@ public class CheckInActivity extends AppCompatActivity implements View.OnClickLi
             super.onActivityResult(requestCode, resultCode, data);
         }
     }
+
     @SuppressLint("SetTextI18n")
     private void checkIn(final String event_id){
-            String username;
+            final String username;
             if(LogInActivity.logged_in){
                 username = LogInActivity.global_username;
             }
             else {
                 username = "user1";
             }
-            String type = "event_check_in";
             BackgroundWorker backgroundWorker = (BackgroundWorker) new BackgroundWorker(new BackgroundWorker.AsyncResponse(){
                 @Override
-                public void processFinish(String output) {
-                    updateCheckInView(output);
+                public void processFinish(final String output) {
+                    if(addCheckInSuccess(output)) {
 
+                        setSuccessInUI(event_id,username);
+                    }else{
+                        setUnsuccessfullUI(output);
+                    }
                 }
-            }).execute(type,username,event_id);
-        checkInResult.setText("checked into event number:"+ event_id);
+            }).execute("event_check_in",username,event_id);
+    }
+
+    private void setUnsuccessfullUI(String output) {
+    }
+
+    private void setSuccessInUI(String event_id, String username) {
+        String eventName = getEventName(event_id);
+        String getTotalPoints = getTotalPoints(username);
+        checkInResult.setText("checked into event number:" + event_id);
+        checkInResultPoints.setText(eventName);
+    }
+
+    public String getEventName(String event_id) {
+        final String[] name = {""};
+        BackgroundWorker backgroundWorker = (BackgroundWorker) new BackgroundWorker(new BackgroundWorker.AsyncResponse(){
+            @Override
+            public void processFinish(String output) {
+                try {
+                    System.out.println("trying to get request");
+                    System.out.println(output);
+                    JSONObject obj = new JSONObject(output);
+                    System.out.println(obj.getString("data"));
+                    name[0] = obj.getString("data");
+                    System.out.println("----->"+name[0]);
+                }catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).execute("get_event_name",event_id);
+        System.out.println("returning"+name[0]);
+        
+        return name[0];
+    }
+
+    public String getTotalPoints(String username) {
+        return "";
     }
 
 
-    public Boolean updateCheckInView(String output) {
+    public Boolean addCheckInSuccess(String output) {
         try {
             JSONObject obj = new JSONObject(output);
             return obj.getInt("success")==1;
@@ -90,9 +129,9 @@ public class CheckInActivity extends AppCompatActivity implements View.OnClickLi
     public void onClick(View view) {
         qrScan.initiateScan();
     }
-
+//valid result from QR code
     public boolean validResult(JSONObject data) throws JSONException {
-        if (data.has("event_id") && data.length() == 1 && data.get("event_id") instanceof Integer){
+        if(data.has("event_id") && data.length() == 1 && data.get("event_id") instanceof Integer){
             return true;
         }else{
             return false;

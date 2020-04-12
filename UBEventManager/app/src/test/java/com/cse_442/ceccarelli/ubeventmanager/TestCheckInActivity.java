@@ -41,8 +41,8 @@ public class TestCheckInActivity {
     public void testUpdateCheckInView(){
         CheckInActivity activity = new CheckInActivity();
         String jstring = "{\"success\":'1',\"data\":\"Added attendance for user: for event number 5\"}";
-        assertTrue(activity.updateCheckInView(jstring));
+        assertTrue(activity.addCheckInSuccess(jstring));
         String jstring2 = "{\"success\":0,\"data\":\"Added attendance for user: for event number \"}";
-        assertFalse(activity.updateCheckInView(jstring2));
+        assertFalse(activity.addCheckInSuccess(jstring2));
     }
 }
