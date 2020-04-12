@@ -8,43 +8,65 @@
     tools:context=".CheckInActivity"
     tools:showIn="@layout/activity_check_in" >
 <!--    my functionality?-->
+
     <TextView
         android:id="@+id/textViewName"
-        android:layout_width="377dp"
-        android:layout_height="166dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginBottom="316dp"
+
+        android:layout_width="278dp"
+        android:layout_height="83dp"
+
         android:text="To check into an event please allow the app to access your camera and scan the QR code."
         android:textAlignment="center"
         android:textColor="@color/darkRoyalBlue"
-        android:textSize="24sp"
+        android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+
+        app:layout_constraintHorizontal_bias="0.529"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.098" />
 
     <Button
         android:id="@+id/buttonScan"
         android:layout_width="121dp"
         android:layout_height="60dp"
-        android:layout_marginBottom="76dp"
+        android:layout_marginBottom="56dp"
         android:background="@color/darkRoyalBlue"
-        android:textColor="@color/white"
         android:text="Open Camera"
+        android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/checkInResult"
-        android:layout_width="169dp"
+        android:layout_width="0dp"
         android:layout_height="69dp"
-        android:layout_marginTop="48dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="28dp"
+        android:layout_marginEnd="20dp"
         android:textAlignment="center"
         android:textColor="@color/darkRoyalBlue"
-        android:textSize="24sp"
+        android:textSize="18sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewName" />
+
+    <TextView
+        android:id="@+id/checkInResult_points"
+        android:layout_width="0dp"
+        android:layout_height="69dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="28dp"
+        android:layout_marginEnd="20dp"
+        android:textAlignment="center"
+        android:textColor="@color/darkRoyalBlue"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/checkInResult" />
 
 </android.support.constraint.ConstraintLayout>

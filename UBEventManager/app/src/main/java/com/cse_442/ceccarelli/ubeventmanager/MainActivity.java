@@ -78,47 +78,6 @@ public class MainActivity extends AppCompatActivity
             Intent intent = new Intent(this, LogInActivity.class);
             startActivity(intent);
             this.finish();
-            /*
-            super.onCreate(savedInstanceState);
-            setContentView(R.layout.activity_main);
-            Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-            setSupportActionBar(toolbar);
-
-            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-            ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                    this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-            drawer.addDrawerListener(toggle);
-            toggle.syncState();
-
-            NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-            navigationView.setNavigationItemSelectedListener(this);
-            getTotalPoints();
-            // textViews holds TextViews corresponding to each box for three upcoming activities
-            HashMap<Integer, HashMap<String, TextView>> textViews = buildTextViews();
-
-            // Fetch from database
-            new FetchData().execute();
-            // Wait for asynchronous fetch success
-            while (retText.compareTo("processing") == 0) ;
-            //retText now has he JSON value (hopefully)
-
-            JSONObject jsonObject;
-            try {
-                jsonObject = new JSONObject(retText);
-
-                // Check if fetch from DB failed - if so, end
-                if ((int) jsonObject.get("success") != 1) {
-                    // No need to update TextViews because they have the error message by default.
-                    System.out.println("ERROR FETCHING DATA FROM DATABASE");
-                    return;
-                }
-                // Iterate through textviews and update
-                updateTextViews(jsonObject, textViews);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-             */
         }
         else{
             Log.d("MainActivity", "Reached Else in main");
@@ -276,14 +235,7 @@ public class MainActivity extends AppCompatActivity
         String retVal= "";
         try {
             JSONObject obj = new JSONObject(output);
-            System.out.println("1");
-            System.out.println(obj);
-            JSONObject data = obj.getJSONObject("data");
-            System.out.println("2");
-            System.out.println(data);
-            retVal = data.getString("total_points");
-            System.out.println("3");
-            System.out.println(retVal);
+            retVal = obj.getString("data");
         }catch(Exception e){
             Log.e("log_tag", "Error parsing data "+e.toString());
         }
@@ -359,5 +311,10 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+    public void onResume()
+    {
+        super.onResume();
+        getTotalPoints();
     }
 }

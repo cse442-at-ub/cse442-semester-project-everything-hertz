@@ -17,7 +17,6 @@ public class TestMainActivity {
             assertTrue(false);
         } catch (IndexOutOfBoundsException e){}
 
-
     }
 
     @Test

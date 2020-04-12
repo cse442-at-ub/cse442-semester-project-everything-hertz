@@ -17,8 +17,10 @@ android {
         }
     }
     testOptions {
-        unitTests.returnDefaultValues = true
-        unitTests.includeAndroidResources = true
+        unitTests {
+            returnDefaultValues = true
+            includeAndroidResources = true
+        }
     }
 }
 
@@ -36,5 +38,7 @@ dependencies {
     implementation 'com.journeyapps:zxing-android-embedded:3.4.0'
     implementation 'com.github.PhilJay:MPAndroidChart:v2.0.9'
     testImplementation 'org.json:json:20160810'
+
 //    implementation "testCompile 'org.json:json:20140107'"
+
 }

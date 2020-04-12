@@ -35,7 +35,8 @@
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
 
-        <activity android:name=".CheckInActivity" />
+        <activity android:name=".CheckInActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"/>
         <activity
             android:name=".AnalyticsActivity"
             android:label="@string/title_activity_analytics"
