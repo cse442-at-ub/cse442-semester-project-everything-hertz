@@ -35,7 +35,8 @@
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
 
-        <activity android:name=".CheckInActivity" />
+        <activity android:name=".CheckInActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"/>
         <activity
             android:name=".AnalyticsActivity"
             android:label="@string/title_activity_analytics"
@@ -47,7 +48,9 @@
         <activity
             android:name=".LogInActivity"
             android:label="@string/title_activity_log_in"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"
+            android:noHistory="true"
+            android:excludeFromRecents="true"/>
     </application>
 
 </manifest>

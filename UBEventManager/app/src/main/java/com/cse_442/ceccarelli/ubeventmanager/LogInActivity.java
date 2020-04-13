@@ -1,11 +1,14 @@
 package com.cse_442.ceccarelli.ubeventmanager;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -18,8 +21,9 @@ import java.io.InputStreamReader;
 import java.net.URL;
 
 public class LogInActivity extends AppCompatActivity {
-    public static boolean logged_in = false;
-    public static String global_username = "";
+    public final String LOGGED_IN = "logged_in";
+    public final String USERNAME = "username";
+    public final String HAVENAME = "havename";
     String username,password,result;
 
     EditText usernameInput;
@@ -36,8 +40,15 @@ public class LogInActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(LogInActivity.this);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putBoolean(LOGGED_IN,false);
+        editor.putBoolean(HAVENAME, false);
+        editor.commit();
+        /*
         logged_in = false;
         global_username = "";
+         */
         usernameInput = (EditText) findViewById(R.id.usernameInputText);
         passwordInput = (EditText) findViewById(R.id.passwordInputText);
 
@@ -67,9 +78,14 @@ public class LogInActivity extends AppCompatActivity {
             @Override
             public void processFinish(String output) {
                 if(output.compareTo("pass") == 0){
-                    logged_in = true;
+                    SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(LogInActivity.this);
+                    SharedPreferences.Editor editor = preferences.edit();
+                    editor.putString(USERNAME, usernameInput.getText().toString());
+                    editor.putBoolean(LOGGED_IN,true);
+                    editor.commit();
+                    Log.d("LogInActivity", "Preferences were committed");
                     Intent intent = new Intent(LogInActivity.this,MainActivity.class);
-                    global_username = usernameInput.getText().toString();
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);
                 }
                 else if(output.compareTo("fail") == 0){
@@ -82,7 +98,7 @@ public class LogInActivity extends AppCompatActivity {
                 }
                 else{
                     TextView t1 = (TextView) findViewById(R.id.log_in_text);
-                    t1.setText("Try Again");
+                    t1.setText("Try again");
                 }
             }
         }).execute(type,username,password);
