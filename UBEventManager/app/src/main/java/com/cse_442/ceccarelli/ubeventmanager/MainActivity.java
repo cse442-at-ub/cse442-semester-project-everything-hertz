@@ -79,6 +79,7 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState){
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
         SharedPreferences.Editor editor = preferences.edit();
+        super.onCreate(savedInstanceState);
         if(!preferences.getBoolean(LOGGED_IN,false)) {
             Intent intent = new Intent(this, LogInActivity.class);
             startActivity(intent);
@@ -86,7 +87,6 @@ public class MainActivity extends AppCompatActivity
         }
         else{
             Log.d("MainActivity", "Reached Else in main");
-            super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_main);
             Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
             setSupportActionBar(toolbar);
