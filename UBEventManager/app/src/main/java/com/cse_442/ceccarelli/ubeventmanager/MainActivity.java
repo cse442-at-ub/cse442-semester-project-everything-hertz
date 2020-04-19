@@ -80,6 +80,7 @@ public class MainActivity extends AppCompatActivity
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
         SharedPreferences.Editor editor = preferences.edit();
         if(!preferences.getBoolean(LOGGED_IN,false)) {
+            super.onCreate(savedInstanceState);
             Intent intent = new Intent(this, LogInActivity.class);
             startActivity(intent);
             this.finish();

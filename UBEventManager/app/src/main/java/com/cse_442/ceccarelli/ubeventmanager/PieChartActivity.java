@@ -1,6 +1,8 @@
 package com.cse_442.ceccarelli.ubeventmanager;
 
+import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
@@ -14,11 +16,25 @@ import com.github.mikephil.charting.utils.ValueFormatter;
 import java.util.ArrayList;
 
 public class PieChartActivity extends AppCompatActivity {
-
+    public final String LOGGED_IN = "logged_in";
+    public final String USERNAME = "username";
+    String username;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pie_chart_activity);
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(PieChartActivity.this);
+        SharedPreferences.Editor editor = preferences.edit();
+        if(preferences.getBoolean(LOGGED_IN,false)){
+            username = preferences.getString(USERNAME,"user1");
+        }
+        else {
+            username = "user1";
+        }
+        setPieChart();
+    }
+
+    private void setPieChart() {
         PieChart pieChart = findViewById(R.id.pieChart);
         ArrayList<Entry> NoOfEmp = new ArrayList<>();
 
