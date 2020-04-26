@@ -60,6 +60,7 @@ public class PieChartActivity extends AppCompatActivity {
         return false;
     }
     public Hashtable<String, Integer> parseData(String output){
+        System.out.println(output);
         Hashtable<String, Integer> dictionary = new Hashtable<String, Integer>();
         try {
             JSONObject obj = new JSONObject(output);
@@ -78,6 +79,7 @@ public class PieChartActivity extends AppCompatActivity {
         }catch (JSONException e) {
             e.printStackTrace();
         }
+        System.out.println(dictionary);
         return dictionary;
     }
 
@@ -98,19 +100,6 @@ public class PieChartActivity extends AppCompatActivity {
             count++;
         }
         PieDataSet dataSet = new PieDataSet(NoOfEmp, "Attendence");
-//        NoOfEmp.add(new Entry(9f, 0));
-//        NoOfEmp.add(new Entry(1f, 1));
-//        NoOfEmp.add(new Entry(10f, 2));
-//        NoOfEmp.add(new Entry(4f, 3));
-//
-//
-//
-
-
-//        activityTypes.add("Athletics");
-//        activityTypes.add("Clubs");
-//        activityTypes.add("Speaker Series");
-//        activityTypes.add("Academic Events");
 
         PieData data = new PieData(activityTypes, dataSet);
         dataSet.setColors(ColorTemplate.LIBERTY_COLORS);
