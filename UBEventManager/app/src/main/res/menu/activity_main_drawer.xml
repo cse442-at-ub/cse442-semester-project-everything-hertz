@@ -21,6 +21,10 @@
             android:icon="@mipmap/calendar"
             android:title="Upcoming Events" />
         <item
+            android:id="@+id/new_event"
+            android:icon="@mipmap/event"
+            android:title="Add event" />
+        <item
             android:id="@+id/nav_log_out"
             android:title="Log Out" />
     </group>

@@ -113,21 +113,29 @@ public class LogInActivity extends AppCompatActivity {
                 editor.commit();
                 Log.d("LogInActivity", "Preferences were committed");
 
-                if (userType.contains("student")){
-                    Intent intent = new Intent(LogInActivity.this,MainActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    startActivity(intent);
+                boolean coord = ! userType.contains("student");
+                Intent intent = new Intent(LogInActivity.this,MainActivity.class);
+                intent.putExtra("coordinator", coord);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
 
-                } else if (userType.contains("coordinator")){
-                    Intent intent = new Intent(LogInActivity.this,AddEventActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    startActivity(intent);
+//                if (userType.contains("student")){
+////                    getResources().getBoolean(R.bool.coordinator) = true;
+//
+//                    Intent intent = new Intent(LogInActivity.this,MainActivity.class);
+//                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//                    startActivity(intent);
+//
+//                } else if (userType.contains("coordinator")){
+//                    Intent intent = new Intent(LogInActivity.this,AddEventActivity.class);
+//                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//                    startActivity(intent);
+//
+//                } else {
+//                    TextView t1 = (TextView) findViewById(R.id.log_in_text);
+//                    t1.setText("Invalid user type");
 
-                } else {
-                    TextView t1 = (TextView) findViewById(R.id.log_in_text);
-                    t1.setText("Invalid user type");
-
-                }
+//                }
 
 
             }
