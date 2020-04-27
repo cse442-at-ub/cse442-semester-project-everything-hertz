@@ -74,7 +74,8 @@ public class AddEventActivity extends AppCompatActivity {
             return "Please enter an event location.";
         } else if (description.isEmpty()){
             return "Please enter an event description.";
-
+        } else if (description.length() > 200){
+            return "Description too long";
         } else{
             return "success";
         }
