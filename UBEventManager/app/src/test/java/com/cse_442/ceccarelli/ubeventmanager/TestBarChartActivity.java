@@ -17,8 +17,8 @@ public class TestBarChartActivity {
         String s2 = "{\"success\":1,\"data\":[]}";
 
         Hashtable<String, Integer> output1 = new Hashtable<String, Integer>();
+        output1.put("May",1);
         output1.put("Jun",1);
-        output1.put("Jul",1);
         Hashtable<String, Integer> output2 = new Hashtable<String, Integer>();
 
         assertEquals(output1.toString(),activity.parseData(s1).toString());

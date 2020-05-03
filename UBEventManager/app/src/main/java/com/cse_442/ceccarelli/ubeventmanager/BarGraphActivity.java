@@ -44,7 +44,7 @@ public class BarGraphActivity extends AppCompatActivity {
                 if(eventDataSuccess(output)) {
                     System.out.println("successful");
                     Hashtable<String, Integer> data = parseData(output);
-//                    createBarChart(data);
+                    createBarChart(data);
 
                 }
             }
@@ -58,11 +58,12 @@ public class BarGraphActivity extends AppCompatActivity {
         try {
             JSONObject obj = new JSONObject(output);
             JSONArray data = obj.getJSONArray("data");
+            System.out.println(data);
             for (int i = 0; i < data.length(); i++){
                 JSONObject pairing = (JSONObject) data.get(i);
                 Integer month = (Integer) pairing.get("Month");
                 Integer count = (Integer) pairing.get("count");
-                String monthStr = months[month];
+                String monthStr = months[month-1];
                 monthCount.put(monthStr,count);
             }
         }catch (JSONException e) {
@@ -81,24 +82,26 @@ public class BarGraphActivity extends AppCompatActivity {
         }
         return false;
     }
-    public void createBarChart(Hashtable<String, Integer> data2) {
+    public void createBarChart(Hashtable<String, Integer> input) {
+        String[] monthsOrder = {"Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sept","Oct","Nov","Dec"};
         BarChart chart = findViewById(R.id.barChart);
-
-        ArrayList<BarEntry> NoOfEmp = new ArrayList<>();
-
-        NoOfEmp.add(new BarEntry(5, 0));
-        NoOfEmp.add(new BarEntry(1, 1));
-        NoOfEmp.add(new BarEntry(2, 2));
-        NoOfEmp.add(new BarEntry(1, 3));
-
-        BarDataSet barDataSet = new BarDataSet(NoOfEmp, "No Of Events Attended");
-
         ArrayList<String> months = new ArrayList<>();
-        months.add("Sept");
-        months.add("Oct");
-        months.add("Nov");
-        months.add("Dec");
+        ArrayList<BarEntry> NoOfEmp = new ArrayList<>();
+        int count = 0;
+//        for( String key: input.keySet()){
+//
+//        }
 
+        for( int i = 0; i< 12; i++){
+
+            if(input.containsKey(monthsOrder[i]) ){
+                String key = monthsOrder[i];
+                NoOfEmp.add(new BarEntry(input.get(key), count));
+                months.add(key);
+                count++;
+            }
+        }
+        BarDataSet barDataSet = new BarDataSet(NoOfEmp, "No Of Events Attended");
 
         chart.animateY(2000);
 
@@ -113,7 +116,8 @@ public class BarGraphActivity extends AppCompatActivity {
         });
         chart.setData(data);
         chart.getLegend().setEnabled(false);
-
+        chart.getAxisLeft().setDrawLabels(false);
+        chart.getAxisLeft().setDrawAxisLine(false);
         chart.getAxisLeft().setDrawGridLines(false);
         chart.getXAxis().setDrawGridLines(false);
         chart.getAxisRight().setDrawGridLines(false);
@@ -129,7 +133,7 @@ public class BarGraphActivity extends AppCompatActivity {
                 return String.valueOf((int) Math.floor(value));
             }
         });
-        chart.getAxisLeft().setLabelCount(5);
+        chart.getAxisLeft().setLabelCount(0);
         chart.setDescription("");
     }
 }

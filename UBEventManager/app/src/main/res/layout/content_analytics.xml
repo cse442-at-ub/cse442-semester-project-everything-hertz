@@ -23,13 +23,14 @@
 
     <Button
         android:id="@+id/frequencyBtn"
-        android:layout_width="98dp"
+        android:layout_width="119dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="308dp"
         android:background="@color/darkRoyalBlue"
-        android:text="Frequency"
+        android:text="Monthly Attendance"
         android:textColor="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.239"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
@@ -37,14 +38,25 @@
         android:id="@+id/eventTypeBtn"
         android:layout_width="99dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="308dp"
         android:background="@color/darkRoyalBlue"
         android:text=" Event Type "
         android:textColor="@color/white"
         app:layout_constraintStart_toEndOf="@+id/frequencyBtn"
         app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="323dp"
+        android:layout_height="230dp"
+        android:layout_marginTop="36dp"
+        android:text='On this page you can view your personal attendance data. In the "Monthly Attendance" tab you can see how many events you have attended per month this year. In the "Event Type" tab you can see a breakdown of what type of events you tend to attend. '
+        android:textColor="#022244"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
 
 </android.support.constraint.ConstraintLayout>
