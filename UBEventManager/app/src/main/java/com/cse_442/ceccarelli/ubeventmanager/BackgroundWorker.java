@@ -37,6 +37,7 @@ public class BackgroundWorker extends AsyncTask<String,Void,String> {
         String get_event_points_url = "https://www-student.cse.buffalo.edu/CSE442-542/2020-spring/cse-442k/getEventPoints.php";
         final String real_name_url = "https://www-student.cse.buffalo.edu/CSE442-542/2020-spring/cse-442k/getRealName.php";
         final String get_event_information_url = "https://www-student.cse.buffalo.edu/CSE442-542/2020-spring/cse-442k/getEventStats.php";
+        final String month_attendance_url = "https://www-student.cse.buffalo.edu/CSE442-542/2020-spring/cse-442k/getUsersAttendanceFreq.php";
         if(type.equals("get_user_points")) {
             try {
                 String user_name = params[1];
@@ -228,6 +229,37 @@ public class BackgroundWorker extends AsyncTask<String,Void,String> {
                 OutputStream outputStream = httpURLConnection.getOutputStream();
                 BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
                 String post_data = URLEncoder.encode("user_name","UTF-8")+"="+URLEncoder.encode(user_name,"UTF-8");
+                bufferedWriter.write(post_data);
+                bufferedWriter.flush();
+                bufferedWriter.close();
+                outputStream.close();
+                InputStream inputStream = httpURLConnection.getInputStream();
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream,"iso-8859-1"));
+                String result="";
+                String line= "";
+                while((line = bufferedReader.readLine())!= null) {
+                    result += line;
+                }
+                bufferedReader.close();
+                inputStream.close();
+                httpURLConnection.disconnect();
+                return result;
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }else if(type.equals("get_monthly_attendance")) {
+            try {
+                String user_name = params[1];
+                String year = params[2];
+                URL url = new URL(month_attendance_url);
+                HttpURLConnection httpURLConnection = (HttpURLConnection)url.openConnection();
+                httpURLConnection.setRequestMethod("POST");
+                httpURLConnection.setDoOutput(true);
+                httpURLConnection.setDoInput(true);
+                OutputStream outputStream = httpURLConnection.getOutputStream();
+                BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
+                String post_data = URLEncoder.encode("user_name","UTF-8")+"="+URLEncoder.encode(user_name,"UTF-8")+ "&" +
+                        URLEncoder.encode("year","UTF-8")+"="+year;
                 bufferedWriter.write(post_data);
                 bufferedWriter.flush();
                 bufferedWriter.close();
