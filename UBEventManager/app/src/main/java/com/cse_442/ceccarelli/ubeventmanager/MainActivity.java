@@ -43,6 +43,7 @@ public class MainActivity extends AppCompatActivity
     public void setRetText(String s){
         retText = s;
     }
+    public boolean coordinator = false;
     // Separate class to fetch from database asynchronously
     private class FetchData extends AsyncTask<Void, Void, Void>{
 
@@ -79,14 +80,20 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState){
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
         SharedPreferences.Editor editor = preferences.edit();
+        super.onCreate(savedInstanceState);
         if(!preferences.getBoolean(LOGGED_IN,false)) {
+            //super.onCreate(savedInstanceState);
             Intent intent = new Intent(this, LogInActivity.class);
             startActivity(intent);
             this.finish();
         }
         else{
+            try {
+                coordinator = getIntent().getExtras().getBoolean("coordinator");
+                // NOTE: id coordinator quits app then does not re-log in, they will not be able to add event
+            } catch (Exception e){}
+            //super.onCreate(savedInstanceState);
             Log.d("MainActivity", "Reached Else in main");
-            super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_main);
             Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
             setSupportActionBar(toolbar);
@@ -96,6 +103,12 @@ public class MainActivity extends AppCompatActivity
                     this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
             drawer.addDrawerListener(toggle);
             toggle.syncState();
+
+            NavigationView nv = (NavigationView) findViewById(R.id.nav_view);
+            Menu menu = nv.getMenu();
+            MenuItem addEvent = menu.findItem(R.id.new_event);
+            addEvent.setVisible(coordinator); //CCC
+
             retText = "processing";
 
             final NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
@@ -299,6 +312,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
@@ -352,6 +366,9 @@ public class MainActivity extends AppCompatActivity
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
             this.finish();
+        } else if (id == R.id.new_event){
+            Intent intent = new Intent(this, AddEventActivity.class);
+            startActivity(intent);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

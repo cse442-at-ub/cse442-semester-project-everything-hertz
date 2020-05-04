@@ -74,7 +74,6 @@ public class CheckInActivity extends AppCompatActivity implements View.OnClickLi
                 public void processFinish(final String output) {
                     if(addCheckInSuccess(output)) {
                         setSuccessInUI(event_id,username);
-                        System.out.println("the output"+output);
                     }else{
                         setUnsuccessfullUI(event_id);
                     }
@@ -89,7 +88,7 @@ public class CheckInActivity extends AppCompatActivity implements View.OnClickLi
             public void processFinish(String output) {
                 try {
                     JSONObject obj = new JSONObject(output);
-                    checkInResult.setText("There was an error with checking into "+obj.getString("data"));
+                    checkInResult.setText("You were already checked into "+obj.getString("data"));
                 }catch (JSONException e) {
                     checkInResult.setText("There was an error with checking in");
                     e.printStackTrace();
@@ -103,9 +102,9 @@ public class CheckInActivity extends AppCompatActivity implements View.OnClickLi
             @SuppressLint("SetTextI18n")
             @Override
             public void processFinish(String output) {
+                System.out.println(output);
                 try {
                     JSONObject obj = new JSONObject(output);
-                    System.out.println(obj.getString("data"));
                     checkInResult.setText("You have checked into " + obj.getString("data"));
                 }catch (JSONException e) {
                     e.printStackTrace();
@@ -117,14 +116,14 @@ public class CheckInActivity extends AppCompatActivity implements View.OnClickLi
             @Override
             public void processFinish(String output) {
                 try {
+                    System.out.println(output);
                     JSONObject obj = new JSONObject(output);
-                    System.out.println(obj.getString("data"));
-                    checkInResultPoints.setText("You now have " + obj.getString("data")+" points!");
+                    checkInResultPoints.setText("You earned " + obj.getString("data")+" points!");
                 }catch (JSONException e) {
                     e.printStackTrace();
                 }
             }
-        }).execute("get_user_points",username);
+        }).execute("get_event_points",event_id);
     }
 
     public Boolean addCheckInSuccess(String output) {
