@@ -71,7 +71,6 @@ public class LogInActivity extends AppCompatActivity {
             }
         });
 
-        /*
         register = findViewById(R.id.registerButton);
 
         register.setOnClickListener(new View.OnClickListener() {
@@ -81,8 +80,6 @@ public class LogInActivity extends AppCompatActivity {
                startActivity(intent);
             }
         });
-
-         */
 
     }
 
