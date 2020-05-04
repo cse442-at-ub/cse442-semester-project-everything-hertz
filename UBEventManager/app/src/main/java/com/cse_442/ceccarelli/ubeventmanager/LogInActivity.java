@@ -32,7 +32,7 @@ public class LogInActivity extends AppCompatActivity {
     EditText usernameInput;
     EditText passwordInput;
 
-    Button submit;
+    Button submit, register;
 
 
 
@@ -63,8 +63,17 @@ public class LogInActivity extends AppCompatActivity {
                 username = usernameInput.getText().toString();
                 password = passwordInput.getText().toString();
                 result = "nothing";
-
                 tryLogIn("log_in",username,password);
+            }
+        });
+
+        register = findViewById(R.id.registerButton);
+
+        register.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+               Intent intent = new Intent(LogInActivity.this, registrationActivity.class);
+               startActivity(intent);
             }
         });
 

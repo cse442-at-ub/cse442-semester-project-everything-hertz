@@ -41,6 +41,7 @@ public class BackgroundWorker extends AsyncTask<String,Void,String> {
         final String get_event_information_url = "https://www-student.cse.buffalo.edu/CSE442-542/2020-spring/cse-442k/getEventStats.php";
         final String month_attendance_url = "https://www-student.cse.buffalo.edu/CSE442-542/2020-spring/cse-442k/getUsersAttendanceFreq.php";
         final String add_event = "https://www-student.cse.buffalo.edu/CSE442-542/2020-spring/cse-442k/addEvent.php";
+        final String register_user_url = "https://www-student.cse.buffalo.edu/CSE442-542/2020-spring/cse-442k/register_user.php";
         if (type.equals("get_user_type")) {
             try {
                 String user_name = params[1];
@@ -70,7 +71,7 @@ public class BackgroundWorker extends AsyncTask<String,Void,String> {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        } else if(type.equals("get_user_points")) {
+        }else if(type.equals("get_user_points")) {
             try {
                 String user_name = params[1];
                 URL url = new URL(get_points_url);
@@ -353,6 +354,57 @@ public class BackgroundWorker extends AsyncTask<String,Void,String> {
                 e.printStackTrace();
             }
         }
+        else if(type.equals("register")){
+            try {
+                String user_name = params[1];
+                String password = params[2];
+                String first_name = params[3];
+                String last_name = params[4];
+                String school_year = params[5];
+                String major = params[6];
+                Log.d("BackgroundWorker", user_name);
+                Log.d("BackgroundWorker", password);
+                Log.d("BackgroundWorker", first_name);
+                Log.d("BackgroundWorker", last_name);
+                Log.d("BackgroundWorker", school_year);
+                Log.d("BackgroundWorker", major);
+
+
+                URL url = new URL(register_user_url);
+                HttpURLConnection httpURLConnection = (HttpURLConnection)url.openConnection();
+                httpURLConnection.setRequestMethod("POST");
+                httpURLConnection.setDoOutput(true);
+                httpURLConnection.setDoInput(true);
+                OutputStream outputStream = httpURLConnection.getOutputStream();
+                BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
+                String post_data = URLEncoder.encode("username","UTF-8") + "=" + URLEncoder.encode(user_name,"UTF-8") + "&" +
+                        URLEncoder.encode("password","UTF-8") + "=" + URLEncoder.encode(password,"UTF-8") + "&" +
+                        URLEncoder.encode("first_name","UTF-8") + "=" + URLEncoder.encode(first_name,"UTF-8") + "&" +
+                        URLEncoder.encode("last_name","UTF-8") + "=" + URLEncoder.encode(last_name,"UTF-8") + "&" +
+                        URLEncoder.encode("school_year","UTF-8") + "=" + URLEncoder.encode(school_year,"UTF-8") + "&" +
+                        URLEncoder.encode("major","UTF-8") + "=" + URLEncoder.encode(major,"UTF-8");
+                bufferedWriter.write(post_data);
+                bufferedWriter.flush();
+                bufferedWriter.close();
+                outputStream.close();
+                Log.d("BackgroundWorker", "made it to input stream");
+                InputStream inputStream = httpURLConnection.getInputStream();
+                Log.d("BackgroundWorker", "passed input stream");
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream,"iso-8859-1"));
+                String result="";
+                String line= "";
+                while((line = bufferedReader.readLine())!= null) {
+                    result += line;
+                }
+                bufferedReader.close();
+                inputStream.close();
+                httpURLConnection.disconnect();
+                return result;
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        Log.d("BackgroundWorker", "try died");
         return null;
     }
 
