@@ -82,7 +82,7 @@ public class MainActivity extends AppCompatActivity
         SharedPreferences.Editor editor = preferences.edit();
         super.onCreate(savedInstanceState);
         if(!preferences.getBoolean(LOGGED_IN,false)) {
-            super.onCreate(savedInstanceState);
+            //super.onCreate(savedInstanceState);
             Intent intent = new Intent(this, LogInActivity.class);
             startActivity(intent);
             this.finish();
@@ -92,6 +92,7 @@ public class MainActivity extends AppCompatActivity
                 coordinator = getIntent().getExtras().getBoolean("coordinator");
                 // NOTE: id coordinator quits app then does not re-log in, they will not be able to add event
             } catch (Exception e){}
+            //super.onCreate(savedInstanceState);
             Log.d("MainActivity", "Reached Else in main");
             setContentView(R.layout.activity_main);
             Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
