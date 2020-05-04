@@ -60,13 +60,6 @@ public class LogInActivity extends AppCompatActivity {
                 username = usernameInput.getText().toString();
                 password = passwordInput.getText().toString();
                 result = "nothing";
-
-
-                //System.out.println(username + ", " + password);
-                /*
-                Intent intent = new Intent(LogInActivity.this,MainActivity.class);
-                startActivity(intent);
-                 */
                 tryLogIn("log_in",username,password);
             }
         });
