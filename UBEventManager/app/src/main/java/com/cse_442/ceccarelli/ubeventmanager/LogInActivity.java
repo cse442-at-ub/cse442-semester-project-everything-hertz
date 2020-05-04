@@ -15,16 +15,19 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.util.concurrent.TimeUnit;
 
 public class LogInActivity extends AppCompatActivity {
     public final String LOGGED_IN = "logged_in";
     public final String USERNAME = "username";
     public final String HAVENAME = "havename";
-    String username,password,result;
+    String username,password,result,userType;
 
     EditText usernameInput;
     EditText passwordInput;
@@ -61,12 +64,6 @@ public class LogInActivity extends AppCompatActivity {
                 password = passwordInput.getText().toString();
                 result = "nothing";
 
-
-                //System.out.println(username + ", " + password);
-                /*
-                Intent intent = new Intent(LogInActivity.this,MainActivity.class);
-                startActivity(intent);
-                 */
                 tryLogIn("log_in",username,password);
             }
         });
@@ -78,15 +75,7 @@ public class LogInActivity extends AppCompatActivity {
             @Override
             public void processFinish(String output) {
                 if(output.compareTo("pass") == 0){
-                    SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(LogInActivity.this);
-                    SharedPreferences.Editor editor = preferences.edit();
-                    editor.putString(USERNAME, usernameInput.getText().toString());
-                    editor.putBoolean(LOGGED_IN,true);
-                    editor.commit();
-                    Log.d("LogInActivity", "Preferences were committed");
-                    Intent intent = new Intent(LogInActivity.this,MainActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    startActivity(intent);
+                    getUserType();
                 }
                 else if(output.compareTo("fail") == 0){
                     TextView t1 = (TextView) findViewById(R.id.log_in_text);
@@ -103,4 +92,54 @@ public class LogInActivity extends AppCompatActivity {
             }
         }).execute(type,username,password);
     }
+
+    public boolean updateUserType(String output){
+        if (!output.equals("No results")) {
+            userType = output;
+            return true;
+        } return false;
+    }
+
+    public void getUserType(){
+        BackgroundWorker backgroundWorker = (BackgroundWorker) new BackgroundWorker(new BackgroundWorker.AsyncResponse(){
+            @Override
+            public void processFinish(String output) {
+                updateUserType(output);
+
+                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(LogInActivity.this);
+                SharedPreferences.Editor editor = preferences.edit();
+                editor.putString(USERNAME, usernameInput.getText().toString());
+                editor.putBoolean(LOGGED_IN,true);
+                editor.commit();
+                Log.d("LogInActivity", "Preferences were committed");
+
+                boolean coord = ! userType.contains("student");
+                Intent intent = new Intent(LogInActivity.this,MainActivity.class);
+                intent.putExtra("coordinator", coord);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+
+//                if (userType.contains("student")){
+////                    getResources().getBoolean(R.bool.coordinator) = true;
+//
+//                    Intent intent = new Intent(LogInActivity.this,MainActivity.class);
+//                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//                    startActivity(intent);
+//
+//                } else if (userType.contains("coordinator")){
+//                    Intent intent = new Intent(LogInActivity.this,AddEventActivity.class);
+//                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//                    startActivity(intent);
+//
+//                } else {
+//                    TextView t1 = (TextView) findViewById(R.id.log_in_text);
+//                    t1.setText("Invalid user type");
+
+//                }
+
+
+            }
+        }).execute("get_user_type",username);
+    }
+
 }
